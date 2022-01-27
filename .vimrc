@@ -10,6 +10,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'valloric/youcompleteme'
 Plug 'preservim/nerdtree'
 Plug 'mbbill/undotree'
+Plug 'morhetz/gruvbox'
 call plug#end()
 " packadd termdebug
 
@@ -37,11 +38,12 @@ set mouse=a
 " Other
 " --- --- --- --- --- --- --- --- --- ----
 set nocompatible
-color peachpuff
-colorscheme darkblue
+set bg=dark
+color gruvbox
+colorscheme gruvbox
 syntax on
 filetype plugin on
-set autochdir
+" set autochdir
 set number relativenumber
 set tabstop=4 expandtab shiftwidth=4 smartindent 
 set path+=**
@@ -63,4 +65,5 @@ nnoremap <leader>G :YcmCompleter GoToReferences <CR>
     " | hi debugBreakpoint term=reverse ctermbg=red guibg=red
 
 " C
-autocmd FileType c nnoremap <leader>d :!gdb $(basename % .c) <CR>
+" autocmd FileType c nnoremap <leader>d :!gdb $(basename % .c) <CR>
+autocmd FileType c command Debug :!gdb $(basename % .c) --eval-command="set style enable off" --eval-command="set logging on" --eval-command="layout src"<CR>
