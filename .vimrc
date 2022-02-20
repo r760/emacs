@@ -1,10 +1,13 @@
 " --- --- --- --- --- --- --- --- --- ----
-" My minimalistic vim config for; 
+" My minimalist vim config for;
 "  C, and Bash development
 " --- --- --- --- --- --- --- --- --- ----
 
 " --- --- --- --- --- --- --- --- --- ----
 " Load plugins
+"
+" ycm installation details
+"   -> https://vimawesome.com/plugin/youcompleteme
 " --- --- --- --- --- --- --- --- --- ----
 call plug#begin('~/.vim/plugged')
 Plug 'valloric/youcompleteme'
