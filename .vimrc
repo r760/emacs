@@ -52,12 +52,14 @@ set wildmenu
 " ctrl remaps
 nnoremap <C-n> :bnext <CR>
 nnoremap <C-p> :bprevious <CR>
+nnoremap <C-o> :only <CR>
 nnoremap <C-f> :find 
 nnoremap <C-t> :NERDTreeToggle <CR>
 nnoremap <C-u> :UndotreeToggle <CR>
 
 " space remaps
 let mapleader = " "
+nnoremap <leader>f :YcmCompleter GetDoc <CR>
 nnoremap <leader>g :YcmCompleter GoToDefinition <CR>
 nnoremap <leader>G :YcmCompleter GoToReferences <CR>
 " nnoremap <leader>d :Termdebug <CR> 
