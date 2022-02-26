@@ -69,6 +69,8 @@ nnoremap <leader>G :YcmCompleter GoToReferences <CR>
     " | hi debugPC term=reverse ctermbg=4 guibg=darkblue
     " | hi debugBreakpoint term=reverse ctermbg=red guibg=red
 
-" C
-" autocmd FileType c nnoremap <leader>d :!gdb $(basename % .c) <CR>
+" C maps
 autocmd FileType c command Debug :!gdb $(basename % .c) --eval-command="set style enable off" --eval-command="set logging on" --eval-command="layout src"<CR>
+
+" other maps
+command Reload :e %
