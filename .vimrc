@@ -13,7 +13,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'valloric/youcompleteme'
 Plug 'preservim/nerdtree'
 Plug 'mbbill/undotree'
-Plug 'morhetz/gruvbox'
+Plug 'lifepillar/vim-solarized8'
 call plug#end()
 " packadd termdebug
 
@@ -42,8 +42,8 @@ set mouse=a
 " --- --- --- --- --- --- --- --- --- ----
 set nocompatible
 set bg=dark
-color gruvbox
-colorscheme gruvbox
+color solarized8_flat
+colorscheme solarized8_flat
 syntax on
 filetype plugin on
 " set autochdir
