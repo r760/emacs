@@ -14,6 +14,7 @@ Plug 'valloric/youcompleteme'
 Plug 'preservim/nerdtree'
 Plug 'mbbill/undotree'
 Plug 'lifepillar/vim-solarized8'
+Plug 'yggdroot/leaderf'
 call plug#end()
 
 " --- --- --- --- --- --- --- --- --- ----
@@ -29,6 +30,12 @@ endif
 if (has("termguicolors"))
     set termguicolors
 endif
+
+" --- --- --- --- --- --- --- --- --- ----
+" Config Leaderf
+" --- --- --- --- --- --- --- --- --- ----
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
 
 " --- --- --- --- --- --- --- --- --- ----
 " Other
@@ -55,7 +62,11 @@ nnoremap <C-k> {
 nnoremap <C-n> :bnext <CR>
 nnoremap <C-p> :bprevious <CR>
 nnoremap <C-o> :only <CR>
-nnoremap <C-f> :find
+nnoremap <C-d> :bd <CR>
+nnoremap <C-b> :Leaderf buffer <CR>
+nnoremap <C-f> :Leaderf file <CR>
+nnoremap <C-l> :Leaderf line <CR>
+nnoremap <C-s> :so % <CR>
 nnoremap <C-t> :NERDTreeToggle <CR>
 nnoremap <C-u> :UndotreeToggle <CR>
 
