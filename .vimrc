@@ -37,6 +37,7 @@ endif
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_PreviewInPopup = 1
 let g:Lf_ShowDevIcons = 0
+let g:Lf_CommandMap = {'<C-P>': ['<C-V>'], '<C-K>': ['<C-P>'], '<C-J>': ['<C-N>']}
 
 " --- --- --- --- --- --- --- --- --- ----
 " Other
@@ -67,7 +68,6 @@ nnoremap <C-d> :bd <CR>
 nnoremap <C-b> :Leaderf buffer <CR>
 nnoremap <C-f> :Leaderf file <CR>
 nnoremap <C-l> :Leaderf line <CR>
-nnoremap <C-s> :so % <CR>
 nnoremap <C-t> :NERDTreeToggle <CR>
 nnoremap <C-u> :UndotreeToggle <CR>
 
