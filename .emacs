@@ -42,6 +42,9 @@
 ;; turn on company mode
 (add-hook 'after-init-hook 'global-company-mode)
 
+;; turn on electric pair mode
+(electric-pair-mode t)
+
 ;; set relative numbers
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
@@ -104,3 +107,4 @@
 	    (term "/bin/bash")))
 ;; C
 (add-hook 'c-mode-hook #'lsp)
+(add-hook 'c-mode-hook (setq c-default-style "k&r"))
