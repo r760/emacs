@@ -106,5 +106,9 @@
 	    (shrink-window 10)
 	    (term "/bin/bash")))
 ;; C
-(add-hook 'c-mode-hook #'lsp)
-(add-hook 'c-mode-hook (setq c-default-style "k&r"))
+;(add-hook 'c-mode-hook #'lsp)
+(setq c-default-style "k&r")
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (lsp)
+	    (setq lsp-enable-indentation nil)))
