@@ -241,6 +241,11 @@
 (global-set-key (kbd "<C-tab> b") 'treemacs)
 #+END_SRC
 
+*** toggle imenu
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<C-tab> s") 'imenu)
+#+END_SRC
+
 *** edit emacs configuration file
 #+BEGIN_SRC emacs-lisp
 (which-key-add-key-based-replacements "<C-tab> e" "edit emacs config")
