@@ -3,292 +3,287 @@
 
 * Melpa
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
 #+END_SRC
-
 
 * Requires
 #+BEGIN_SRC emacs-lisp
-(require 'evil)
-(require 'company)
-(require 'lsp-mode)
-(require 'helm)
-(require 'which-key)
-(require 'swiper)
-(require 'undo-tree)
-(require 'treemacs)
-(require 'org)
-(require 'openwith)
+  (require 'evil)
+  (require 'company)
+  (require 'lsp-mode)
+  (require 'helm)
+  (require 'which-key)
+  (require 'swiper)
+  (require 'undo-tree)
+  (require 'treemacs)
+  (require 'org)
+  (require 'openwith)
 #+END_SRC
-
 
 * Basic
 ** turn off menu-bar-mode
 #+BEGIN_SRC emacs-lisp
-(menu-bar-mode 0)
+  (menu-bar-mode 0)
 #+END_SRC
 
 ** turn off scroll-bar-mode
 #+BEGIN_SRC emacs-lisp
-(scroll-bar-mode 0)
+  (scroll-bar-mode 0)
 #+END_SRC
 
 ** turn off tool-bar-mode
 #+BEGIN_SRC emacs-lisp
-(tool-bar-mode 0)
+  (tool-bar-mode 0)
 #+END_SRC
 
 ** turn off splash-screen
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-splash-screen t)
+  (setq inhibit-splash-screen t)
 #+END_SRC
 
 ** turn on time-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'after-init-hook 'display-time-mode)
+  (add-hook 'after-init-hook 'display-time-mode)
 #+END_SRC
 
 ** turn on battery-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'after-init-hook 'display-battery-mode)
+  (add-hook 'after-init-hook 'display-battery-mode)
 #+END_SRC
 
 ** set line numbering style to relative
 #+BEGIN_SRC emacs-lisp
-(setq display-line-numbers-type 'relative)
+  (setq display-line-numbers-type 'relative)
 #+END_SRC
 
 ** turn on line numbering for prog-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
 ** enable X window system copy/paste
 #+BEGIN_SRC emacs-lisp
-(setq x-select-enable-clipboard t)
+  (setq x-select-enable-clipboard t)
 #+END_SRC
 
 ** set default window split direction to horizontal
 #+BEGIN_SRC emacs-lisp
-(setq split-width-threshold nil)
+  (setq split-width-threshold nil)
 #+END_SRC
 
 ** set backup-saves directory
 #+BEGIN_SRC emacs-lisp
-(setq backup-directory-alist '(("." . "~/.emacs-saves")))
+  (setq backup-directory-alist '(("." . "~/.emacs-saves")))
 #+END_SRC
 
 ** open PDF files with zathura
 #+BEGIN_SRC emacs-lisp
-(openwith-mode t)
-(setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
+  (openwith-mode t)
+  (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
 #+END_SRC
-
 
 * Undo-tree
 ** turn on undo-tree mode for prog-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook 'undo-tree-mode)
+  (add-hook 'prog-mode-hook 'undo-tree-mode)
 #+END_SRC
 
 ** set undo-tree history directory
 #+BEGIN_SRC emacs-lisp
-(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 #+END_SRC
 
 ** turn on undo-tree mode for org-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'org-mode-hook
-	(lambda ()
-	    (undo-tree-mode)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (undo-tree-mode)
+              (org-indent-mode)))
 #+END_SRC
 
 * Evil 
 ** turn on evil-mode
 #+BEGIN_SRC emacs-lisp
-(evil-mode 1)
+  (evil-mode 1)
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
 #+BEGIN_SRC emacs-lisp
-(evil-set-undo-system 'undo-tree)
+  (evil-set-undo-system 'undo-tree)
 #+END_SRC
 
 ** turn off evil-mode in term-mode
 #+BEGIN_SRC emacs-lisp
-(evil-set-initial-state 'term-mode 'emacs)
+  (evil-set-initial-state 'term-mode 'emacs)
 #+END_SRC
-
 
 * Company
 ** turn on company mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'after-init-hook 'global-company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
-
 
 * Which-key
 ** turn on which-key-mode
 #+BEGIN_SRC emacs-lisp
-(which-key-mode 1)
+  (which-key-mode 1)
 #+END_SRC
- emacs-lisp
-
+emacs-lisp
 
 * Electric pair
 ** turn on electric-pair-mode
 #+BEGIN_SRC emacs-lisp
-(electric-pair-mode t)
+  (electric-pair-mode t)
 #+END_SRC
-
 
 * Treemacs
 ** turn on treemacs follow-mode
 #+BEGIN_SRC emacs-lisp
-(setq treemacs-use-follow-mode t)
+  (setq treemacs-use-follow-mode t)
 #+END_SRC
 
 ** turn on treemacs filewatch-mode
 #+BEGIN_SRC emacs-lisp
-(setq treemacs-use-filewatch-mode t)
+  (setq treemacs-use-filewatch-mode t)
 #+END_SRC
-
 
 * Winner
 *** turn on winner mode
 #+BEGIN_SRC emacs-lisp
-(winner-mode 1)
+  (winner-mode 1)
 #+END_SRC
-
 
 * Keybindings
 ** replace existing keybindings
 *** helm find files
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
 
 *** helm buffers list
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
+  (global-set-key (kbd "C-x b") 'helm-buffers-list)
 #+END_SRC
 
 *** helm bookmarks
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x rl") 'helm-bookmarks)
+  (global-set-key (kbd "C-x rl") 'helm-bookmarks)
 #+END_SRC
 
 *** helm meta-x
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "M-x") 'helm-M-x)
 #+END_SRC
 
 *** replace default emacs search with swiper
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-s") 'swiper)
+  (global-set-key (kbd "C-s") 'swiper)
 #+END_SRC
 
 *** open window below
 #+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements "C-x 2" "open window below")
-(global-set-key
- (kbd "C-x 2")
- (lambda ()
-   "open window below"
-   (interactive)
-   (split-window-vertically)
-   (other-window 1)))
+  (which-key-add-key-based-replacements "C-x 2" "open window below")
+  (global-set-key
+   (kbd "C-x 2")
+   (lambda ()
+     "open window below"
+     (interactive)
+     (split-window-vertically)
+     (other-window 1)))
 #+END_SRC
 
 *** open window to the right
 #+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements "C-x 3" "open window to the right")
-(global-set-key
- (kbd "C-x 3")
- (lambda ()
-   "open window to the right"
-   (interactive)
-   (split-window-horizontally)
-   (other-window 1)))
+  (which-key-add-key-based-replacements "C-x 3" "open window to the right")
+  (global-set-key
+   (kbd "C-x 3")
+   (lambda ()
+     "open window to the right"
+     (interactive)
+     (split-window-horizontally)
+     (other-window 1)))
 #+END_SRC
 
 
 ** adding new keybindings
 *** evaluate current buffer
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x e") 'eval-buffer)
+  (global-set-key (kbd "C-x e") 'eval-buffer)
 #+END_SRC
 
 *** toggle fullscreen
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> f") 'toggle-frame-fullscreen)
+  (global-set-key (kbd "<C-tab> f") 'toggle-frame-fullscreen)
 #+END_SRC
 
 *** compile
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> c") 'compile)
+  (global-set-key (kbd "<C-tab> c") 'compile)
+#+END_SRC
+
+*** recompile
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f5>") 'recompile)
 #+END_SRC
 
 *** run async shell command
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> r") 'async-shell-command)
+  (global-set-key (kbd "<C-tab> r") 'async-shell-command)
 #+END_SRC
 
 *** toggle treemacs
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> b") 'treemacs)
+  (global-set-key (kbd "<C-tab> b") 'treemacs)
 #+END_SRC
 
 *** toggle imenu
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> s") 'imenu)
+  (global-set-key (kbd "<C-tab> s") 'imenu)
 #+END_SRC
 
 *** edit emacs configuration file
 #+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements "<C-tab> e" "edit emacs config")
-(global-set-key
- (kbd "<C-tab> e")
- (lambda ()
-   "edit emacs config"
-   (interactive)
-   (find-file "~/.emacs.d/emacs.org")))
+  (which-key-add-key-based-replacements "<C-tab> e" "edit emacs config")
+  (global-set-key
+   (kbd "<C-tab> e")
+   (lambda ()
+     "edit emacs config"
+     (interactive)
+     (find-file "~/.emacs.d/emacs.org")))
 #+END_SRC
 
 *** open a mini bash terminal below
 #+BEGIN_SRC emacs-lisp
-(which-key-add-key-based-replacements "<C-tab> t" "open a mini terminal below")
-(global-set-key
- (kbd "<C-tab> t")
- (lambda ()
-   "open a mini terminal below"
-   (interactive)
-   (split-window-vertically)
-   (other-window 1)
-   (shrink-window 10)
-   (term "/bin/bash")))
+  (which-key-add-key-based-replacements "<C-tab> t" "open a mini terminal below")
+  (global-set-key
+   (kbd "<C-tab> t")
+   (lambda ()
+     "open a mini terminal below"
+     (interactive)
+     (split-window-vertically)
+     (other-window 1)
+     (shrink-window 10)
+     (term "/bin/bash")))
 #+END_SRC
 
 *** undo previous window action
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> u") 'winner-undo)
+  (global-set-key (kbd "<C-tab> u") 'winner-undo)
 #+END_SRC
 
 *** proced
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<C-tab> p") 'proced)
+  (global-set-key (kbd "<C-tab> p") 'proced)
 #+END_SRC
-
-
 
 * C
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
-(setq c-default-style "k&r")
-(add-hook 'c-mode-hook
-	  (lambda ()
-	    (lsp)
-	    (setq lsp-enable-indentation nil)))
+  (setq c-default-style "k&r")
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (lsp)
+              (setq lsp-enable-indentation nil)))
 #+END_SRC
