@@ -139,13 +139,13 @@ emacs-lisp
 #+END_SRC
 
 * Winner
-*** turn on winner mode
+** turn on winner mode
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
 #+END_SRC
 
 * dired
-*** replace dired with ranger
+** replace dired with ranger
 #+BEGIN_SRC emacs-lisp
   (ranger-override-dired-mode t)
 #+END_SRC
@@ -200,7 +200,6 @@ emacs-lisp
      (split-window-horizontally)
      (other-window 1)))
 #+END_SRC
-
 
 ** adding new keybindings
 *** evaluate current buffer
@@ -277,6 +276,7 @@ emacs-lisp
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<C-tab> D") 'xref-find-definitions-other-window)
 #+END_SRC
+
 * C
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
