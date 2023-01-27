@@ -17,9 +17,9 @@
   (require 'which-key)
   (require 'swiper)
   (require 'undo-tree)
-  (require 'treemacs)
   (require 'org)
   (require 'openwith)
+  (require 'ranger)
 #+END_SRC
 
 * Basic
@@ -138,21 +138,16 @@ emacs-lisp
   (electric-pair-mode t)
 #+END_SRC
 
-* Treemacs
-** turn on treemacs follow-mode
-#+BEGIN_SRC emacs-lisp
-  (setq treemacs-use-follow-mode t)
-#+END_SRC
-
-** turn on treemacs filewatch-mode
-#+BEGIN_SRC emacs-lisp
-  (setq treemacs-use-filewatch-mode t)
-#+END_SRC
-
 * Winner
 *** turn on winner mode
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
+#+END_SRC
+
+* dired
+*** replace dired with ranger
+#+BEGIN_SRC emacs-lisp
+  (ranger-override-dired-mode t)
 #+END_SRC
 
 * Keybindings
@@ -233,11 +228,6 @@ emacs-lisp
   (global-set-key (kbd "<C-tab> r") 'async-shell-command)
 #+END_SRC
 
-*** toggle treemacs
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> b") 'treemacs)
-#+END_SRC
-
 *** toggle imenu
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<C-tab> s") 'imenu)
@@ -278,6 +268,15 @@ emacs-lisp
   (global-set-key (kbd "<C-tab> p") 'proced)
 #+END_SRC
 
+*** xref-find-definitions
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<C-tab> d") 'xref-find-definitions)
+#+END_SRC
+
+*** xref-find-definition
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<C-tab> D") 'xref-find-definitions-other-window)
+#+END_SRC
 * C
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
@@ -285,5 +284,6 @@ emacs-lisp
   (add-hook 'c-mode-hook
             (lambda ()
               (lsp)
+              (xref-etags-mode)
               (setq lsp-enable-indentation nil)))
 #+END_SRC
