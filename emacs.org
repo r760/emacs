@@ -275,6 +275,16 @@ emacs-lisp
   (global-set-key (kbd "<C-tab> D") 'xref-find-definitions-other-window)
 #+END_SRC
 
+***  point-to-register
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<C-tab> m") 'point-to-register)
+#+END_SRC
+
+*** jump-to-register
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<C-tab> j") 'jump-to-register)
+#+END_SRC
+
 * C
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
