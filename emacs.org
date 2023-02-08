@@ -19,7 +19,6 @@
   (require 'undo-tree)
   (require 'org)
   (require 'openwith)
-  (require 'ranger)
 #+END_SRC
 
 * Basic
@@ -84,6 +83,11 @@
   (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
 #+END_SRC
 
+** repeat mode
+#+BEGIN_SRC emacs-lisp
+  (repeat-mode)
+#+END_SRC
+
 * Undo-tree
 ** turn on undo-tree mode for prog-mode
 #+BEGIN_SRC emacs-lisp
@@ -142,12 +146,6 @@ emacs-lisp
 ** turn on winner mode
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
-#+END_SRC
-
-* dired
-** replace dired with ranger
-#+BEGIN_SRC emacs-lisp
-  (ranger-override-dired-mode t)
 #+END_SRC
 
 * Keybindings
