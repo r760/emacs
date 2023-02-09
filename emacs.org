@@ -88,6 +88,12 @@
   (repeat-mode)
 #+END_SRC
 
+* Org-mode
+** set maxlevel of clock table to 3
+#+BEGIN_SRC emacs-lisp
+  (setq org-clock-clocktable-default-properties '(:maxlevel 3))
+#+END_SRC
+
 * Undo-tree
 ** turn on undo-tree mode for prog-mode
 #+BEGIN_SRC emacs-lisp
@@ -283,6 +289,21 @@ emacs-lisp
 *** jump-to-register
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<C-tab> j") 'jump-to-register)
+#+END_SRC
+
+*** timesheet
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<C-tab> o")
+                  (lambda ()
+                    (interactive)
+                    (setq FNAME (format-time-string "%Y-%m-%d"))
+                    (setq FNAME (concat "~/wlog/" FNAME ".org"))
+                    (find-file FNAME)
+                    (if (file-exists-p FNAME) nil
+                      (insert "* TIMESHEET")
+                      (org-clock-report)
+                      (save-buffer))
+                    (evil-goto-line)))
 #+END_SRC
 
 * C
