@@ -77,10 +77,10 @@
   (setq backup-directory-alist '(("." . "~/.emacs-saves")))
 #+END_SRC
 
-** open PDF files with zathura
+** open PDF files with open
 #+BEGIN_SRC emacs-lisp
   (openwith-mode t)
-  (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
+  (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
 #+END_SRC
 
 ** repeat mode
@@ -152,6 +152,16 @@ emacs-lisp
 ** turn on winner mode
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
+#+END_SRC
+
+* Functions
+** adding new functions
+*** is-user-buffer
+#+BEGIN_SRC emacs-lisp
+  (defun r760-is-user-buffer()
+    "check if current buffer is a user buffer"
+    (interactive)
+    (if (not (equal (string-match (regexp-quote "*") (buffer-name)) 0)) t 'nil))
 #+END_SRC
 
 * Keybindings
@@ -293,8 +303,10 @@ emacs-lisp
 
 *** timesheet
 #+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<C-tab> o" "open timesheet")
   (global-set-key (kbd "<C-tab> o")
                   (lambda ()
+                    "open timesheet"
                     (interactive)
                     (setq FNAME (format-time-string "%Y-%m-%d"))
                     (setq FNAME (concat "~/wlog/" FNAME ".org"))
@@ -304,6 +316,26 @@ emacs-lisp
                       (org-clock-report)
                       (save-buffer))
                     (evil-goto-line)))
+#+END_SRC
+
+*** next-user-buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-n")
+                  (lambda ()
+                    (interactive)
+                    (let ((orig-buffer (buffer-name)))
+                      (next-buffer)
+                      (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (next-buffer)))))
+#+END_SRC
+
+*** previous-user-buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-p")
+                  (lambda ()
+                    (interactive)
+                    (let ((orig-buffer (buffer-name)))
+                      (previous-buffer)
+                      (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer)))))
 #+END_SRC
 
 * C
