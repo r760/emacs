@@ -314,11 +314,6 @@ emacs-lisp
   (evil-define-key 'normal 'global (kbd ",xD") 'xref-find-definitions-other-window)
 #+END_SRC
 
-***  point-to-register
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-m") 'point-to-register)
-#+END_SRC
-
 *** edit emacs configuration file
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements ",e" "edit emacs config")
@@ -344,6 +339,11 @@ emacs-lisp
                       (org-clock-report)
                       (save-buffer))
                     (evil-goto-line)))
+#+END_SRC
+
+***  point-to-register
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-m") 'point-to-register)
 #+END_SRC
 
 *** jump-to-register
