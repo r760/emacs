@@ -216,6 +216,15 @@ emacs-lisp
 #+END_SRC
 
 ** adding new keybindings
+*** groups
+#+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements ",c" "compilation")
+  (which-key-add-key-based-replacements ",s" "shell")
+  (which-key-add-key-based-replacements ",i" "interactive")
+  (which-key-add-key-based-replacements ",w" "window")
+  (which-key-add-key-based-replacements ",x" "xref")
+#+END_SRC
+
 *** evaluate current buffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x e") 'eval-buffer)
@@ -223,67 +232,86 @@ emacs-lisp
 
 *** compile
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> c") 'compile)
+  (evil-define-key 'normal 'global (kbd ",cc") 'compile)
 #+END_SRC
 
 *** recompile
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") 'recompile)
+  (evil-define-key 'normal 'global (kbd ",cr") 'recompile)
+#+END_SRC
+
+*** revert-buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f6>") 'revert-buffer)
+#+END_SRC
+
+*** next-error
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd ",cn") 'next-error)
+#+END_SRC
+
+*** previous-error
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd ",cp") 'previous-error)
+#+END_SRC
+
+*** run shell command
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd ",sc") 'shell-command)
 #+END_SRC
 
 *** run async shell command
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> r") 'async-shell-command)
-#+END_SRC
-
-*** toggle imenu
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> s") 'imenu)
-#+END_SRC
-
-*** edit emacs configuration file
-#+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<C-tab> e" "edit emacs config")
-  (global-set-key
-   (kbd "<C-tab> e")
-   (lambda ()
-     "edit emacs config"
-     (interactive)
-     (find-file "~/.emacs.d/emacs.org")))
+  (evil-define-key 'normal 'global (kbd ",sa") 'async-shell-command)
 #+END_SRC
 
 *** open a mini bash terminal below
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<C-tab> t" "open a mini terminal below")
-  (global-set-key
-   (kbd "<C-tab> t")
-   (lambda ()
-     "open a mini terminal below"
-     (interactive)
-     (split-window-vertically)
-     (other-window 1)
-     (shrink-window 10)
-     (term "/bin/bash")))
+  (which-key-add-key-based-replacements ",st" "open a mini terminal below")
+  (evil-define-key 'normal 'global (kbd ",st")
+    (lambda ()
+      "open a mini terminal below"
+      (interactive)
+      (split-window-vertically)
+      (other-window 1)
+      (shrink-window 10)
+      (term "/bin/bash")))
 #+END_SRC
 
-*** undo previous window action
+*** imenu
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> u") 'winner-undo)
+  (evil-define-key 'normal 'global (kbd ",im") 'imenu)
+#+END_SRC
+
+*** ibuffer
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd ",ib") 'ibuffer)
+#+END_SRC
+
+*** grep
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd ",ig") 'grep)
 #+END_SRC
 
 *** proced
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> p") 'proced)
+  (evil-define-key 'normal 'global (kbd ",ip") 'proced)
+#+END_SRC
+
+*** undo previous window action
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd ",wu") 'winner-undo)
 #+END_SRC
 
 *** xref-find-definitions
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> d") 'xref-find-definitions)
+  (evil-define-key 'normal 'global (kbd ",xd") 'xref-find-definitions)
 #+END_SRC
 
 *** xref-find-definition
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<C-tab> D") 'xref-find-definitions-other-window)
+  (evil-define-key 'normal 'global (kbd ",xD") 'xref-find-definitions-other-window)
 #+END_SRC
 
 ***  point-to-register
@@ -291,15 +319,20 @@ emacs-lisp
   (global-set-key (kbd "M-m") 'point-to-register)
 #+END_SRC
 
-*** jump-to-register
+*** edit emacs configuration file
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-j") 'jump-to-register)
+  (which-key-add-key-based-replacements ",e" "edit emacs config")
+  (evil-define-key 'normal 'global (kbd ",e")
+    (lambda ()
+      "edit emacs config"
+      (interactive)
+      (find-file "~/.emacs.d/emacs.org")))
 #+END_SRC
 
 *** timesheet
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<C-tab> o" "open timesheet")
-  (global-set-key (kbd "<C-tab> o")
+  (which-key-add-key-based-replacements ",o" "open timesheet")
+  (evil-define-key 'normal 'global (kbd ",o")
                   (lambda ()
                     "open timesheet"
                     (interactive)
@@ -311,6 +344,11 @@ emacs-lisp
                       (org-clock-report)
                       (save-buffer))
                     (evil-goto-line)))
+#+END_SRC
+
+*** jump-to-register
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-j") 'jump-to-register)
 #+END_SRC
 
 *** next-user-buffer
