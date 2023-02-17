@@ -52,11 +52,6 @@
   (add-hook 'after-init-hook 'display-battery-mode)
 #+END_SRC
 
-** set line numbering style to relative
-#+BEGIN_SRC emacs-lisp
-  (setq display-line-numbers-type 'relative)
-#+END_SRC
-
 ** turn on line numbering for prog-mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -87,6 +82,11 @@
 #+BEGIN_SRC emacs-lisp
   (repeat-mode)
 #+END_SRC
+
+** dired disable space key
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
+  #+END_SRC
 
 * Org-mode
 ** set maxlevel of clock table to 3
@@ -218,11 +218,12 @@ emacs-lisp
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements ",c" "compilation")
-  (which-key-add-key-based-replacements ",s" "shell")
-  (which-key-add-key-based-replacements ",i" "interactive")
-  (which-key-add-key-based-replacements ",w" "window")
-  (which-key-add-key-based-replacements ",x" "xref")
+  (which-key-add-key-based-replacements "<SPC>c" "compilation")
+  (which-key-add-key-based-replacements "<SPC>g" "git")
+  (which-key-add-key-based-replacements "<SPC>s" "shell")
+  (which-key-add-key-based-replacements "<SPC>i" "interactive")
+  (which-key-add-key-based-replacements "<SPC>w" "window")
+  (which-key-add-key-based-replacements "<SPC>x" "xref")
 #+END_SRC
 
 *** evaluate current buffer
@@ -232,44 +233,65 @@ emacs-lisp
 
 *** compile
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",cc") 'compile)
+  (global-set-key (kbd "<f6>") 'compile)
+  (evil-define-key 'normal 'global (kbd "<SPC>cc") 'compile)
 #+END_SRC
 
 *** recompile
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") 'recompile)
-  (evil-define-key 'normal 'global (kbd ",cr") 'recompile)
+  (evil-define-key 'normal 'global (kbd "<SPC>cr") 'recompile)
 #+END_SRC
 
 *** revert-buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f6>") 'revert-buffer)
+  (global-set-key (kbd "<f7>") 'revert-buffer)
 #+END_SRC
 
 *** next-error
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",cn") 'next-error)
+  (evil-define-key 'normal 'global (kbd "<SPC>cn") 'next-error)
 #+END_SRC
 
 *** previous-error
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",cp") 'previous-error)
+  (evil-define-key 'normal 'global (kbd "<SPC>cp") 'previous-error)
+#+END_SRC
+
+*** gdb
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>cg") 'gdb)
+#+END_SRC
+
+*** git diff current file
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>gd") 'vc-diff)
+#+END_SRC
+
+*** git diff
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>gD") 'vc-root-diff)
+#+END_SRC
+
+*** git log
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>gl") 'vc-print-root-log)
 #+END_SRC
 
 *** run shell command
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",sc") 'shell-command)
+  (evil-define-key 'normal 'global (kbd "<SPC>sc") 'shell-command)
 #+END_SRC
 
 *** run async shell command
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",sa") 'async-shell-command)
+  (evil-define-key 'normal 'global (kbd "<SPC>sa") 'async-shell-command)
 #+END_SRC
 
 *** open a mini bash terminal below
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements ",st" "open a mini terminal below")
-  (evil-define-key 'normal 'global (kbd ",st")
+  (which-key-add-key-based-replacements "<SPC>st" "open a mini terminal below")
+  (evil-define-key 'normal 'global (kbd "<SPC>st")
     (lambda ()
       "open a mini terminal below"
       (interactive)
@@ -281,43 +303,43 @@ emacs-lisp
 
 *** imenu
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",im") 'imenu)
+  (evil-define-key 'normal 'global (kbd "<SPC>if") 'imenu)
 #+END_SRC
 
 *** ibuffer
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",ib") 'ibuffer)
+  (evil-define-key 'normal 'global (kbd "<SPC>ib") 'ibuffer)
 #+END_SRC
 
 *** grep
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",ig") 'grep)
+  (evil-define-key 'normal 'global (kbd "<SPC>ig") 'grep)
 #+END_SRC
 
 *** proced
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",ip") 'proced)
+  (evil-define-key 'normal 'global (kbd "<SPC>ip") 'proced)
 #+END_SRC
 
 *** undo previous window action
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",wu") 'winner-undo)
+  (evil-define-key 'normal 'global (kbd "<SPC>wu") 'winner-undo)
 #+END_SRC
 
 *** xref-find-definitions
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",xd") 'xref-find-definitions)
+  (evil-define-key 'normal 'global (kbd "<SPC>xd") 'xref-find-definitions)
 #+END_SRC
 
 *** xref-find-definition
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd ",xD") 'xref-find-definitions-other-window)
+  (evil-define-key 'normal 'global (kbd "<SPC>xD") 'xref-find-definitions-other-window)
 #+END_SRC
 
 *** edit emacs configuration file
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements ",e" "edit emacs config")
-  (evil-define-key 'normal 'global (kbd ",e")
+  (which-key-add-key-based-replacements "<SPC>e" "edit emacs config")
+  (evil-define-key 'normal 'global (kbd "<SPC>e")
     (lambda ()
       "edit emacs config"
       (interactive)
@@ -326,8 +348,8 @@ emacs-lisp
 
 *** timesheet
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements ",o" "open timesheet")
-  (evil-define-key 'normal 'global (kbd ",o")
+  (which-key-add-key-based-replacements "<SPC>o" "open timesheet")
+  (evil-define-key 'normal 'global (kbd "<SPC>o")
                   (lambda ()
                     "open timesheet"
                     (interactive)
