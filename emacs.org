@@ -348,6 +348,11 @@ emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>ig") 'grep)
 #+END_SRC
 
+*** rgrep
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>ig") 'rgrep)
+#+END_SRC
+
 *** proced
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>ip") 'proced)
