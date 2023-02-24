@@ -350,7 +350,7 @@ emacs-lisp
 
 *** rgrep
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>ig") 'rgrep)
+  (evil-define-key 'normal 'global (kbd "<SPC>iG") 'rgrep)
 #+END_SRC
 
 *** proced
