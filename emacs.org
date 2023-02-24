@@ -240,11 +240,12 @@ emacs-lisp
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>c" "compilation")
   (which-key-add-key-based-replacements "<SPC>b" "bookmark/recentf")
+  (which-key-add-key-based-replacements "<SPC>c" "compilation")
   (which-key-add-key-based-replacements "<SPC>g" "git")
-  (which-key-add-key-based-replacements "<SPC>s" "shell")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
+  (which-key-add-key-based-replacements "<SPC>m" "man")
+  (which-key-add-key-based-replacements "<SPC>s" "shell")
   (which-key-add-key-based-replacements "<SPC>w" "window")
   (which-key-add-key-based-replacements "<SPC>x" "xref")
 #+END_SRC
@@ -437,6 +438,11 @@ emacs-lisp
 *** open a recent file
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>br") 'recentf-open-files)
+#+END_SRC
+
+*** man
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
 #+END_SRC
 
 * C
