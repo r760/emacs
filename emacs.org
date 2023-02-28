@@ -64,7 +64,7 @@
 
 ** set default window split direction to horizontal
 #+BEGIN_SRC emacs-lisp
-  (setq split-width-threshold nil)
+  ;; (setq split-width-threshold nil)
 #+END_SRC
 
 ** set backup-saves directory
@@ -78,21 +78,23 @@
   (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
 #+END_SRC
 
-** repeat mode
+** enable repeat mode
 #+BEGIN_SRC emacs-lisp
   (repeat-mode)
 #+END_SRC
-
-** dired disable space key
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
-  #+END_SRC
 
 ** auto save bookmarks
 #+BEGIN_SRC emacs-lisp
   (setq bookmark-save-flag 1)
   #+END_SRC
 
+* Dired
+** disable space key
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
+  #+END_SRC
+
+* Recentf
 ** turn on recentf-mode
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
@@ -100,7 +102,7 @@
   (setq recentf-max-saved-items 25)
   #+END_SRC
 
-* Org-mode
+* Org
 ** set maxlevel of clock table to 3
 #+BEGIN_SRC emacs-lisp
   (setq org-clock-clocktable-default-properties '(:maxlevel 3))
@@ -152,7 +154,6 @@
 #+BEGIN_SRC emacs-lisp
   (which-key-mode 1)
 #+END_SRC
-emacs-lisp
 
 * Electric pair
 ** turn on electric-pair-mode
@@ -173,17 +174,23 @@ emacs-lisp
   (defun r760-is-user-buffer()
     "check if current buffer is a user buffer"
     (interactive)
-    (if (not (equal (string-match (regexp-quote "*") (buffer-name)) 0)) t 'nil))
+    (if (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name))) t 'nil))
 #+END_SRC
 
-*** eval-current-file-in-interpreter
+*** open-timesheet
 #+BEGIN_SRC emacs-lisp
-  (defun r760-eval-current-file-in-interpreter (interpreter-path)
-    "evaluate the current file in the given interpreter"
+  (defun r760-timesheet (timesheet-dir-path)
+    "open timesheet (or create it in the give timesheet-dir-path, if it does not exist)"
     (interactive)
     (let (fpath)
-      (setq fpath (concat interpreter-path" " (buffer-file-name)))
-      (async-shell-command fpath)))
+      (if (not (file-directory-p timesheet-dir-path)) (dired-create-directory timesheet-path))
+      (setq fpath (concat timesheet-dir-path "/" (format-time-string "%Y-%m-%d") ".org"))
+      (find-file fpath)
+      (if (file-exists-p fpath) nil
+        (insert "* TIMESHEET")
+        (org-clock-report)
+        (save-buffer))
+      (evil-goto-line)))
 #+END_SRC
 
 * Keybindings
@@ -219,7 +226,6 @@ emacs-lisp
   (global-set-key
    (kbd "C-x 2")
    (lambda ()
-     "open window below"
      (interactive)
      (split-window-vertically)
      (other-window 1)))
@@ -231,7 +237,6 @@ emacs-lisp
   (global-set-key
    (kbd "C-x 3")
    (lambda ()
-     "open window to the right"
      (interactive)
      (split-window-horizontally)
      (other-window 1)))
@@ -318,7 +323,7 @@ emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>se")
     (lambda ()
       (interactive)
-      (r760-eval-current-file-in-interpreter "/bin/bash")))
+      (executable-interpret (buffer-file-name))))
 #+END_SRC
 
 *** open a mini bash terminal below
@@ -378,7 +383,6 @@ emacs-lisp
   (which-key-add-key-based-replacements "<SPC>e" "edit emacs config")
   (evil-define-key 'normal 'global (kbd "<SPC>e")
     (lambda ()
-      "edit emacs config"
       (interactive)
       (find-file "~/.emacs.d/emacs.org")))
 #+END_SRC
@@ -388,26 +392,28 @@ emacs-lisp
   (which-key-add-key-based-replacements "<SPC>o" "open timesheet")
   (evil-define-key 'normal 'global (kbd "<SPC>o")
     (lambda ()
-      "open timesheet"
       (interactive)
-      (let (fpath)
-        (setq fpath (concat "~/wlog/" (format-time-string "%Y-%m-%d") ".org"))
-        (find-file fpath)
-        (if (file-exists-p fpath) nil
-          (insert "* TIMESHEET")
-          (org-clock-report)
-          (save-buffer))
-        (evil-goto-line))))
+      (r760-timesheet "~/wlog")))
 #+END_SRC
 
-*** point-to-register
+*** set bookmark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-m") 'point-to-register)
+  (evil-define-key 'normal 'global (kbd "<SPC>bs") 'bookmark-set)
 #+END_SRC
 
-*** jump-to-register
+*** list bookmarks
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-j") 'jump-to-register)
+  (evil-define-key 'normal 'global (kbd "<SPC>bl") 'helm-bookmarks)
+#+END_SRC
+
+*** open a recent file
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>br") 'recentf-open-files)
+#+END_SRC
+
+*** man
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
 #+END_SRC
 
 *** next-user-buffer
@@ -428,26 +434,6 @@ emacs-lisp
                     (let ((orig-buffer (buffer-name)))
                       (previous-buffer)
                       (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer)))))
-#+END_SRC
-
-*** set bookmark
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bs") 'bookmark-set)
-#+END_SRC
-
-*** jump to bookmark
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bj") 'helm-bookmarks)
-#+END_SRC
-
-*** open a recent file
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>br") 'recentf-open-files)
-#+END_SRC
-
-*** man
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
 #+END_SRC
 
 * C
