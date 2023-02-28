@@ -245,7 +245,7 @@
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>b" "bookmark/recentf")
+  (which-key-add-key-based-replacements "<SPC>b" "buffer/bookmark/recentf")
   (which-key-add-key-based-replacements "<SPC>c" "compilation")
   (which-key-add-key-based-replacements "<SPC>g" "git")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
@@ -401,9 +401,19 @@
   (evil-define-key 'normal 'global (kbd "<SPC>bs") 'bookmark-set)
 #+END_SRC
 
+*** delete bookmark
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>bd") 'bookmark-delete)
+#+END_SRC
+
+*** list buffers
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>bl") 'helm-buffers-list)
+#+END_SRC
+
 *** list bookmarks
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bl") 'helm-bookmarks)
+  (evil-define-key 'normal 'global (kbd "<SPC>bL") 'helm-bookmarks)
 #+END_SRC
 
 *** open a recent file
