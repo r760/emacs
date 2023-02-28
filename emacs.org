@@ -387,13 +387,23 @@
       (find-file "~/.emacs.d/emacs.org")))
 #+END_SRC
 
-*** timesheet
+*** open timesheet
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements "<SPC>o" "open timesheet")
   (evil-define-key 'normal 'global (kbd "<SPC>o")
     (lambda ()
       (interactive)
       (r760-timesheet "~/wlog")))
+#+END_SRC
+
+*** open timesheet and export
+#+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<SPC>O" "open timesheet and export")
+  (evil-define-key 'normal 'global (kbd "<SPC>O")
+    (lambda ()
+      (interactive)
+      (r760-timesheet "~/wlog")
+      (org-export-dispatch)))
 #+END_SRC
 
 *** set bookmark
