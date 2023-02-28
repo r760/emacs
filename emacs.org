@@ -416,6 +416,16 @@
   (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
 #+END_SRC
 
+*** point-to-register
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-m") 'point-to-register)
+#+END_SRC
+
+*** jump-to-register
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-j") 'jump-to-register)
+#+END_SRC
+
 *** next-user-buffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-n")
