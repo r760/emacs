@@ -88,6 +88,12 @@
   (setq bookmark-save-flag 1)
   #+END_SRC
 
+** mark variables
+#+BEGIN_SRC emacs-lisp
+  (setq r760-mark '())
+  (setq r760-mark-index 0)
+#+END_SRC
+
 * Dired
 ** disable space key
 #+BEGIN_SRC emacs-lisp
@@ -191,6 +197,51 @@
         (org-clock-report)
         (save-buffer))
       (evil-goto-line)))
+#+END_SRC
+
+*** print mark
+#+BEGIN_SRC emacs-lisp
+  (defun r760-print-mark ()
+    ;; print r760-mark list
+    (interactive)
+    (print r760-mark))
+#+END_SRC
+
+*** save mark
+#+BEGIN_SRC emacs-lisp
+  (defun r760-save-mark ()
+    ;; save mark ie. current buffer-name, point to r760-mark list
+    (interactive)
+    (let ((buffer-name (buffer-name)) (buffer-pos (point)))
+      (setq r760-mark (delete-dups (append r760-mark (list (list buffer-name buffer-pos)))))))
+#+END_SRC
+
+*** delete mark
+#+BEGIN_SRC emacs-lisp
+  (defun r760-delete-mark ()
+    ;; delete mark ie. current buffer-name, point from r760-mark list
+    (interactive)
+    (let ((buffer-name (buffer-name)) (buffer-pos (point)))
+      (let ((mark (list buffer-name buffer-pos)))
+        (when (-contains-p r760-mark mark)
+          (setq r760-mark (delete mark r760-mark))
+          (setq r760-mark-index (- r760-mark-index 1))))))
+#+END_SRC
+
+*** cycle mark
+#+BEGIN_SRC emacs-lisp
+  (defun r760-cycle-marks ()
+    ;; jump to next mark in r760-mark list
+    (interactive)
+    (let ((number-of-marks (length r760-mark)))
+      (when (>= number-of-marks 1) 
+        (if (or (<= r760-mark-index -1) (>= r760-mark-index number-of-marks))
+            (setq r760-mark-index 0))
+        (let ((mark (nth r760-mark-index r760-mark)))
+          (let ((buffer-name (nth 0 mark)) (buffer-pos (nth 1 mark)))
+            (switch-to-buffer buffer-name)
+            (goto-char buffer-pos)
+            (setq r760-mark-index (+ r760-mark-index 1)))))))
 #+END_SRC
 
 * Keybindings
@@ -436,14 +487,31 @@
   (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
 #+END_SRC
 
-*** point-to-register
+*** save mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-m") 'point-to-register)
+  (global-set-key (kbd "M-m")
+                  (lambda ()
+                    (interactive)
+                    (r760-save-mark)
+                    (message "Mark saved")))
 #+END_SRC
 
-*** jump-to-register
+*** delete mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-j") 'jump-to-register)
+  (global-set-key (kbd "M-d")
+                  (lambda ()
+                    (interactive)
+                    (r760-delete-mark)
+                    (message "Mark deleted")))
+#+END_SRC
+
+*** cycle mark
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-j")
+                  (lambda ()
+                    (interactive)
+                    (r760-cycle-marks)
+                    (message "Mark cycled")))
 #+END_SRC
 
 *** next-user-buffer
