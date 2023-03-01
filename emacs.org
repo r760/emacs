@@ -487,6 +487,21 @@
   (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
 #+END_SRC
 
+*** dired
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>d") 'dired)
+#+END_SRC
+
+*** helm-find-files
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>f") 'helm-find-files)
+#+END_SRC
+
+*** helm-find
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>F") 'helm-find)
+#+END_SRC
+
 *** save mark
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-m")
