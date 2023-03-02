@@ -228,6 +228,15 @@
           (setq r760-mark-index (- r760-mark-index 1))))))
 #+END_SRC
 
+*** delete all mark
+#+BEGIN_SRC emacs-lisp
+  (defun r760-delete-all-marks ()
+    ;; delete all marks from r760-mark list
+    (interactive)
+    (setq r760-mark '())
+    (setq r760-mark-index 0))
+#+END_SRC
+
 *** cycle mark
 #+BEGIN_SRC emacs-lisp
   (defun r760-cycle-marks ()
