@@ -199,9 +199,9 @@
       (evil-goto-line)))
 #+END_SRC
 
-*** print mark
+*** print mark list
 #+BEGIN_SRC emacs-lisp
-  (defun r760-print-mark ()
+  (defun r760-print-mark-list ()
     ;; print r760-mark list
     (interactive)
     (print r760-mark))
