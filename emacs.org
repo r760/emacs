@@ -228,7 +228,7 @@
           (setq r760-mark-index (- r760-mark-index 1))))))
 #+END_SRC
 
-*** delete all mark
+*** delete all marks
 #+BEGIN_SRC emacs-lisp
   (defun r760-delete-all-marks ()
     ;; delete all marks from r760-mark list
