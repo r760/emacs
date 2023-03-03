@@ -305,13 +305,11 @@
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>b" "buffer/bookmark/recentf")
-  (which-key-add-key-based-replacements "<SPC>c" "compilation")
+  (which-key-add-key-based-replacements "<SPC>B" "bookmark")
+  (which-key-add-key-based-replacements "<SPC>c" "comp/interp/dbg")
   (which-key-add-key-based-replacements "<SPC>g" "git")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
-  (which-key-add-key-based-replacements "<SPC>m" "man")
-  (which-key-add-key-based-replacements "<SPC>s" "shell")
-  (which-key-add-key-based-replacements "<SPC>w" "window")
+  (which-key-add-key-based-replacements "<SPC>s" "shell/terminal")
   (which-key-add-key-based-replacements "<SPC>x" "xref")
 #+END_SRC
 
@@ -349,7 +347,16 @@
 
 *** gdb
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>cg") 'gdb)
+  (evil-define-key 'normal 'global (kbd "<SPC>cd") 'gdb)
+#+END_SRC
+
+*** interpret current file
+#+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<SPC>ci" "interpret current file")
+  (evil-define-key 'normal 'global (kbd "<SPC>ci")
+    (lambda ()
+      (interactive)
+      (executable-interpret (buffer-file-name))))
 #+END_SRC
 
 *** git diff current file
@@ -375,15 +382,6 @@
 *** run async shell command
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>sa") 'async-shell-command)
-#+END_SRC
-
-*** evaluate current file in bash
-#+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>se" "evaluate current file in bash")
-  (evil-define-key 'normal 'global (kbd "<SPC>se")
-    (lambda ()
-      (interactive)
-      (executable-interpret (buffer-file-name))))
 #+END_SRC
 
 *** open a mini bash terminal below
@@ -425,7 +423,7 @@
 
 *** undo previous window action
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>wu") 'winner-undo)
+  (evil-define-key 'normal 'global (kbd "<SPC>u") 'winner-undo)
 #+END_SRC
 
 *** xref-find-definitions
@@ -456,49 +454,58 @@
       (r760-timesheet "~/wlog")))
 #+END_SRC
 
-*** open timesheet and export
+*** org export
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>O" "open timesheet and export")
+  (which-key-add-key-based-replacements "<SPC>O" "org-export-dispatch")
   (evil-define-key 'normal 'global (kbd "<SPC>O")
     (lambda ()
       (interactive)
-      (r760-timesheet "~/wlog")
       (org-export-dispatch)))
 #+END_SRC
 
 *** set bookmark
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bs") 'bookmark-set)
+  (evil-define-key 'normal 'global (kbd "<SPC>Bs") 'bookmark-set)
 #+END_SRC
 
 *** delete bookmark
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bd") 'bookmark-delete)
-#+END_SRC
-
-*** list buffers
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bl") 'helm-buffers-list)
+  (evil-define-key 'normal 'global (kbd "<SPC>Bd") 'bookmark-delete)
 #+END_SRC
 
 *** list bookmarks
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bL") 'helm-bookmarks)
+  (evil-define-key 'normal 'global (kbd "<SPC>Bl") 'helm-bookmarks)
 #+END_SRC
 
 *** open a recent file
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>br") 'recentf-open-files)
+  (evil-define-key 'normal 'global (kbd "<SPC>r") 'recentf-open-files)
+#+END_SRC
+
+*** list buffers
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>b") 'helm-buffers-list)
+#+END_SRC
+
+*** kill buffer
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>k") 'kill-buffer)
 #+END_SRC
 
 *** man
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>mm") 'man)
+  (evil-define-key 'normal 'global (kbd "<SPC>m") 'man)
 #+END_SRC
 
 *** dired
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>d") 'dired)
+#+END_SRC
+
+*** dired jump
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>D") 'dired-jump)
 #+END_SRC
 
 *** helm-find-files
