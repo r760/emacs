@@ -98,6 +98,7 @@
 ** disable space key
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
+  (eval-after-load "dired" '(define-key dired-mode-map (kbd "M-s") nil))
   #+END_SRC
 
 * Recentf
@@ -237,20 +238,36 @@
     (setq r760-mark-index 0))
 #+END_SRC
 
-*** cycle mark
+*** cycle mark forward
 #+BEGIN_SRC emacs-lisp
-  (defun r760-cycle-marks ()
+  (defun r760-cycle-marks-forward ()
     ;; jump to next mark in r760-mark list
     (interactive)
     (let ((number-of-marks (length r760-mark)))
       (when (>= number-of-marks 1) 
+        (setq r760-mark-index (+ r760-mark-index 1))
         (if (or (<= r760-mark-index -1) (>= r760-mark-index number-of-marks))
             (setq r760-mark-index 0))
         (let ((mark (nth r760-mark-index r760-mark)))
           (let ((buffer-name (nth 0 mark)) (buffer-pos (nth 1 mark)))
             (switch-to-buffer buffer-name)
-            (goto-char buffer-pos)
-            (setq r760-mark-index (+ r760-mark-index 1)))))))
+            (goto-char buffer-pos))))))
+#+END_SRC
+
+*** cycle mark backward
+#+BEGIN_SRC emacs-lisp
+  (defun r760-cycle-marks-backward ()
+    ;; jump to previous mark in r760-mark list
+    (interactive)
+    (let ((number-of-marks (length r760-mark)))
+      (when (>= number-of-marks 1) 
+        (setq r760-mark-index (- r760-mark-index 1))
+        (if (or (<= r760-mark-index -1) (>= r760-mark-index number-of-marks))
+            (setq r760-mark-index (- number-of-marks 1)))
+        (let ((mark (nth r760-mark-index r760-mark)))
+          (let ((buffer-name (nth 0 mark)) (buffer-pos (nth 1 mark)))
+            (switch-to-buffer buffer-name)
+            (goto-char buffer-pos))))))
 #+END_SRC
 
 * Keybindings
@@ -520,7 +537,7 @@
 
 *** save mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-m")
+  (global-set-key (kbd "M-e")
                   (lambda ()
                     (interactive)
                     (r760-save-mark)
@@ -529,25 +546,34 @@
 
 *** delete mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-d")
+  (global-set-key (kbd "M-r")
                   (lambda ()
                     (interactive)
                     (r760-delete-mark)
                     (message "Mark deleted")))
 #+END_SRC
 
-*** cycle mark
+*** cycle mark forward
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-j")
+  (global-set-key (kbd "M-q")
                   (lambda ()
                     (interactive)
-                    (r760-cycle-marks)
+                    (r760-cycle-marks-forward)
+                    (message "Mark cycled")))
+#+END_SRC
+
+*** cycle mark backward
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-w")
+                  (lambda ()
+                    (interactive)
+                    (r760-cycle-marks-backward)
                     (message "Mark cycled")))
 #+END_SRC
 
 *** next-user-buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-n")
+  (global-set-key (kbd "M-a")
                   (lambda ()
                     (interactive)
                     (let ((orig-buffer (buffer-name)))
@@ -557,7 +583,7 @@
 
 *** previous-user-buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-p")
+  (global-set-key (kbd "M-s")
                   (lambda ()
                     (interactive)
                     (let ((orig-buffer (buffer-name)))
