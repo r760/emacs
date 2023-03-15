@@ -555,7 +555,7 @@
 
 *** cycle mark forward
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-q")
+  (global-set-key (kbd "M-w")
                   (lambda ()
                     (interactive)
                     (r760-cycle-marks-forward)
@@ -564,7 +564,7 @@
 
 *** cycle mark backward
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-w")
+  (global-set-key (kbd "M-q")
                   (lambda ()
                     (interactive)
                     (r760-cycle-marks-backward)
@@ -573,7 +573,7 @@
 
 *** next-user-buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-a")
+  (global-set-key (kbd "M-s")
                   (lambda ()
                     (interactive)
                     (let ((orig-buffer (buffer-name)))
@@ -583,7 +583,7 @@
 
 *** previous-user-buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-s")
+  (global-set-key (kbd "M-a")
                   (lambda ()
                     (interactive)
                     (let ((orig-buffer (buffer-name)))
