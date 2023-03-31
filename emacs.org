@@ -21,162 +21,6 @@
   (require 'openwith)
 #+END_SRC
 
-* Basic
-** turn off menu-bar-mode
-#+BEGIN_SRC emacs-lisp
-  (menu-bar-mode 0)
-#+END_SRC
-
-** turn off scroll-bar-mode
-#+BEGIN_SRC emacs-lisp
-  (scroll-bar-mode 0)
-#+END_SRC
-
-** turn off tool-bar-mode
-#+BEGIN_SRC emacs-lisp
-  (tool-bar-mode 0)
-#+END_SRC
-
-** turn off splash-screen
-#+BEGIN_SRC emacs-lisp
-  (setq inhibit-splash-screen t)
-#+END_SRC
-
-** turn on time-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'display-time-mode)
-#+END_SRC
-
-** turn on battery-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'display-battery-mode)
-#+END_SRC
-
-** turn on line numbering for prog-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-#+END_SRC
-
-** enable X window system copy/paste
-#+BEGIN_SRC emacs-lisp
-  (setq x-select-enable-clipboard t)
-#+END_SRC
-
-** set default window split direction to horizontal
-#+BEGIN_SRC emacs-lisp
-  ;; (setq split-width-threshold nil)
-#+END_SRC
-
-** set backup-saves directory
-#+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist '(("." . "~/.emacs-saves")))
-#+END_SRC
-
-** open PDF files with open
-#+BEGIN_SRC emacs-lisp
-  (openwith-mode t)
-  (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
-#+END_SRC
-
-** enable repeat mode
-#+BEGIN_SRC emacs-lisp
-  (repeat-mode)
-#+END_SRC
-
-** auto save bookmarks
-#+BEGIN_SRC emacs-lisp
-  (setq bookmark-save-flag 1)
-  #+END_SRC
-
-** mark variables
-#+BEGIN_SRC emacs-lisp
-  (setq r760-mark '())
-  (setq r760-mark-index 0)
-#+END_SRC
-
-* Dired
-** disable space key
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
-  (eval-after-load "dired" '(define-key dired-mode-map (kbd "M-s") nil))
-  (evil-define-key 'normal dired-mode-map
-    (kbd "h") 'dired-up-directory
-    (kbd "l") 'dired-find-file)
-  #+END_SRC
-
-* Recentf
-** turn on recentf-mode
-#+BEGIN_SRC emacs-lisp
-  (recentf-mode 1)
-  (setq recentf-max-menu-items 25)
-  (setq recentf-max-saved-items 25)
-  #+END_SRC
-
-* Org
-** set maxlevel of clock table to 3
-#+BEGIN_SRC emacs-lisp
-  (setq org-clock-clocktable-default-properties '(:maxlevel 3))
-#+END_SRC
-
-* Undo-tree
-** turn on undo-tree mode for prog-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'undo-tree-mode)
-#+END_SRC
-
-** set undo-tree history directory
-#+BEGIN_SRC emacs-lisp
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-#+END_SRC
-
-** turn on undo-tree mode for org-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (undo-tree-mode)
-              (org-indent-mode)))
-#+END_SRC
-
-* Evil 
-** turn on evil-mode
-#+BEGIN_SRC emacs-lisp
-  (evil-mode 1)
-#+END_SRC
-
-** use undo-tree for undo/redo in evil mode
-#+BEGIN_SRC emacs-lisp
-  (evil-set-undo-system 'undo-tree)
-#+END_SRC
-
-** turn off evil-mode in term-mode
-#+BEGIN_SRC emacs-lisp
-  (evil-set-initial-state 'term-mode 'emacs)
-#+END_SRC
-
-* Company
-** turn on company mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'global-company-mode)
-#+END_SRC
-
-* Which-key
-** turn on which-key-mode
-#+BEGIN_SRC emacs-lisp
-  (which-key-mode 1)
-#+END_SRC
-
-* Electric pair
-** turn on electric-pair-mode
-#+BEGIN_SRC emacs-lisp
-  (electric-pair-mode t)
-#+END_SRC
-
-* Winner
-** turn on winner mode
-#+BEGIN_SRC emacs-lisp
-  (winner-mode 1)
-#+END_SRC
-
 * Functions
 ** adding new functions
 *** is-user-buffer
@@ -271,6 +115,178 @@
           (let ((buffer-name (nth 0 mark)) (buffer-pos (nth 1 mark)))
             (switch-to-buffer buffer-name)
             (goto-char buffer-pos))))))
+#+END_SRC
+
+*** dired goto first file
+#+BEGIN_SRC emacs-lisp
+  (defun r760-dired-goto-first-file()
+    (interactive)
+    (evil-goto-first-line 5))
+#+END_SRC
+
+*** dired goto last file
+#+BEGIN_SRC emacs-lisp
+  (defun r760-dired-goto-last-file()
+    (interactive)
+    (evil-goto-line)
+    (evil-previous-line)) 
+#+END_SRC
+* Basic
+** turn off menu-bar-mode
+#+BEGIN_SRC emacs-lisp
+  (menu-bar-mode 0)
+#+END_SRC
+
+** turn off scroll-bar-mode
+#+BEGIN_SRC emacs-lisp
+  (scroll-bar-mode 0)
+#+END_SRC
+
+** turn off tool-bar-mode
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode 0)
+#+END_SRC
+
+** turn off splash-screen
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t)
+#+END_SRC
+
+** turn on time-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'display-time-mode)
+#+END_SRC
+
+** turn on battery-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'display-battery-mode)
+#+END_SRC
+
+** turn on line numbering for prog-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+END_SRC
+
+** enable X window system copy/paste
+#+BEGIN_SRC emacs-lisp
+  (setq x-select-enable-clipboard t)
+#+END_SRC
+
+** set default window split direction to horizontal
+#+BEGIN_SRC emacs-lisp
+  ;; (setq split-width-threshold nil)
+#+END_SRC
+
+** set backup-saves directory
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs-saves")))
+#+END_SRC
+
+** open PDF files with open
+#+BEGIN_SRC emacs-lisp
+  (openwith-mode t)
+  (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
+#+END_SRC
+
+** enable repeat mode
+#+BEGIN_SRC emacs-lisp
+  (repeat-mode)
+#+END_SRC
+
+** auto save bookmarks
+#+BEGIN_SRC emacs-lisp
+  (setq bookmark-save-flag 1)
+  #+END_SRC
+
+** mark variables
+#+BEGIN_SRC emacs-lisp
+  (setq r760-mark '())
+  (setq r760-mark-index 0)
+#+END_SRC
+
+* Dired
+** disable space key
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
+  (eval-after-load "dired" '(define-key dired-mode-map (kbd "M-s") nil))
+  (evil-define-key 'normal dired-mode-map
+    (kbd "h") 'dired-up-directory
+    (kbd "l") 'dired-find-file
+    (kbd "gg") 'r760-dired-goto-first-file
+    (kbd "G") 'r760-dired-goto-last-file)
+  #+END_SRC
+
+* Recentf
+** turn on recentf-mode
+#+BEGIN_SRC emacs-lisp
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 25)
+  (setq recentf-max-saved-items 25)
+  #+END_SRC
+
+* Org
+** set maxlevel of clock table to 3
+#+BEGIN_SRC emacs-lisp
+  (setq org-clock-clocktable-default-properties '(:maxlevel 3))
+#+END_SRC
+
+* Undo-tree
+** turn on undo-tree mode for prog-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'undo-tree-mode)
+#+END_SRC
+
+** set undo-tree history directory
+#+BEGIN_SRC emacs-lisp
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+#+END_SRC
+
+** turn on undo-tree mode for org-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (undo-tree-mode)
+              (org-indent-mode)))
+#+END_SRC
+
+* Evil 
+** turn on evil-mode
+#+BEGIN_SRC emacs-lisp
+  (evil-mode 1)
+#+END_SRC
+
+** use undo-tree for undo/redo in evil mode
+#+BEGIN_SRC emacs-lisp
+  (evil-set-undo-system 'undo-tree)
+#+END_SRC
+
+** turn off evil-mode in term-mode
+#+BEGIN_SRC emacs-lisp
+  (evil-set-initial-state 'term-mode 'emacs)
+#+END_SRC
+
+* Company
+** turn on company mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+
+* Which-key
+** turn on which-key-mode
+#+BEGIN_SRC emacs-lisp
+  (which-key-mode 1)
+#+END_SRC
+
+* Electric pair
+** turn on electric-pair-mode
+#+BEGIN_SRC emacs-lisp
+  (electric-pair-mode t)
+#+END_SRC
+
+* Winner
+** turn on winner mode
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
 #+END_SRC
 
 * Keybindings
