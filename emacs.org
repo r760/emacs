@@ -21,6 +21,22 @@
   (require 'openwith)
 #+END_SRC
 
+* Evil 
+** turn on evil-mode
+#+BEGIN_SRC emacs-lisp
+  (evil-mode 1)
+#+END_SRC
+
+** use undo-tree for undo/redo in evil mode
+#+BEGIN_SRC emacs-lisp
+  (evil-set-undo-system 'undo-tree)
+#+END_SRC
+
+** turn off evil-mode in term-mode
+#+BEGIN_SRC emacs-lisp
+  (evil-set-initial-state 'term-mode 'emacs)
+#+END_SRC
+
 * Functions
 ** adding new functions
 *** is-user-buffer
@@ -247,22 +263,6 @@
             (lambda ()
               (undo-tree-mode)
               (org-indent-mode)))
-#+END_SRC
-
-* Evil 
-** turn on evil-mode
-#+BEGIN_SRC emacs-lisp
-  (evil-mode 1)
-#+END_SRC
-
-** use undo-tree for undo/redo in evil mode
-#+BEGIN_SRC emacs-lisp
-  (evil-set-undo-system 'undo-tree)
-#+END_SRC
-
-** turn off evil-mode in term-mode
-#+BEGIN_SRC emacs-lisp
-  (evil-set-initial-state 'term-mode 'emacs)
 #+END_SRC
 
 * Company
