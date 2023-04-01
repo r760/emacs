@@ -225,11 +225,14 @@
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
   (eval-after-load "dired" '(define-key dired-mode-map (kbd "M-s") nil))
-  (evil-define-key 'normal dired-mode-map
-    (kbd "h") 'dired-up-directory
-    (kbd "l") 'dired-find-file
-    (kbd "gg") 'r760-dired-goto-first-file
-    (kbd "G") 'r760-dired-goto-last-file)
+  (eval-after-load "dired" '(evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory))
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (evil-define-key 'normal dired-mode-map
+                (kbd "h") 'dired-up-directory
+                (kbd "l") 'dired-find-file
+                (kbd "gg") 'r760-dired-goto-first-file
+                (kbd "G") 'r760-dired-goto-last-file)))
   #+END_SRC
 
 * Recentf
