@@ -137,15 +137,16 @@
 #+BEGIN_SRC emacs-lisp
   (defun r760-dired-goto-first-file()
     (interactive)
-    (evil-goto-first-line 5))
+    (beginning-of-buffer)
+    (dired-next-line 4))
 #+END_SRC
 
 *** dired goto last file
 #+BEGIN_SRC emacs-lisp
   (defun r760-dired-goto-last-file()
     (interactive)
-    (evil-goto-line)
-    (evil-previous-line)) 
+    (end-of-buffer)
+    (dired-previous-line 1))
 #+END_SRC
 * Basic
 ** turn off menu-bar-mode
