@@ -44,7 +44,7 @@
   (defun r760-is-user-buffer()
     "check if current buffer is a user buffer"
     (interactive)
-    (if (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name))) t 'nil))
+    (if (and (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name))) (not (string-equal major-mode "dired-mode"))) t 'nil))
 #+END_SRC
 
 *** open-timesheet
