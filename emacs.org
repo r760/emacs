@@ -8,6 +8,13 @@
   (package-initialize)
 #+END_SRC
 
+* Preload
+** global variables
+#+BEGIN_SRC emacs-lisp
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+#+END_SRC
+
 * Requires
 #+BEGIN_SRC emacs-lisp
   (require 'evil)
@@ -19,12 +26,19 @@
   (require 'undo-tree)
   (require 'org)
   (require 'openwith)
+  (require 'magit)
+  (require 'evil-collection)
 #+END_SRC
 
 * Evil 
 ** turn on evil-mode
 #+BEGIN_SRC emacs-lisp
   (evil-mode 1)
+#+END_SRC
+
+** turn on evil-mode for magit
+#+BEGIN_SRC emacs-lisp
+  (evil-collection-init '(magit))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
@@ -44,7 +58,7 @@
   (defun r760-is-user-buffer()
     "check if current buffer is a user buffer"
     (interactive)
-    (if (and (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name))) (not (string-equal major-mode "dired-mode"))) t 'nil))
+    (if (and (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name))) (not (or (string-equal major-mode "magit-status-mode") (string-equal major-mode "dired-mode")))) t 'nil))
 #+END_SRC
 
 *** open-timesheet
@@ -60,7 +74,7 @@
         (insert "* TIMESHEET")
         (org-clock-report)
         (save-buffer))
-      (evil-goto-line)))
+      (end-of-buffer)))
 #+END_SRC
 
 *** print mark list
@@ -351,6 +365,7 @@
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
   (which-key-add-key-based-replacements "<SPC>s" "shell/terminal")
   (which-key-add-key-based-replacements "<SPC>x" "xref")
+  (which-key-add-key-based-replacements "<SPC>e" "emacs config")
 #+END_SRC
 
 *** evaluate current buffer
@@ -399,19 +414,9 @@
       (executable-interpret (buffer-file-name))))
 #+END_SRC
 
-*** git diff current file
+*** magit
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>gd") 'vc-diff)
-#+END_SRC
-
-*** git diff
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>gD") 'vc-root-diff)
-#+END_SRC
-
-*** git log
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>gl") 'vc-print-root-log)
+  (evil-define-key 'normal 'global (kbd "<SPC>g") 'magit-status)
 #+END_SRC
 
 *** run shell command
@@ -478,11 +483,20 @@
 
 *** edit emacs configuration file
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>e" "edit emacs config")
-  (evil-define-key 'normal 'global (kbd "<SPC>e")
+  (which-key-add-key-based-replacements "<SPC>ee" "edit")
+  (evil-define-key 'normal 'global (kbd "<SPC>ee")
     (lambda ()
       (interactive)
       (find-file "~/.emacs.d/emacs.org")))
+#+END_SRC
+
+*** edit emacs configuration file
+#+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<SPC>er" "reload")
+  (evil-define-key 'normal 'global (kbd "<SPC>er")
+    (lambda ()
+      (interactive)
+      (org-babel-load-file "~/.emacs.d/emacs.org")))
 #+END_SRC
 
 *** open timesheet
@@ -558,6 +572,11 @@
   (evil-define-key 'normal 'global (kbd "<SPC>F") 'helm-find)
 #+END_SRC
 
+*** helm-show-kill-ring
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>p") 'helm-show-kill-ring)
+#+END_SRC
+
 *** save mark
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-e")
@@ -618,6 +637,7 @@
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
   (setq c-default-style "k&r")
+  (setq-default c-basic-offset 4)
   (add-hook 'c-mode-hook
             (lambda ()
               (lsp)
