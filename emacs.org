@@ -39,6 +39,7 @@
 ** turn on evil-mode for magit
 #+BEGIN_SRC emacs-lisp
   (evil-collection-init '(magit))
+  (evil-collection-init '(dired))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
@@ -240,7 +241,6 @@
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
   (eval-after-load "dired" '(define-key dired-mode-map (kbd "M-s") nil))
-  (eval-after-load "dired" '(evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory))
   (add-hook 'dired-mode-hook
             (lambda ()
               (evil-define-key 'normal dired-mode-map
