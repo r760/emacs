@@ -1,0 +1,9 @@
+# contributor: r760
+# name: func
+# key: func
+# --
+$1
+$2 ($3)
+{
+    return $4;
+}

@@ -28,6 +28,15 @@
   (require 'openwith)
   (require 'magit)
   (require 'evil-collection)
+  (require 'yasnippet)
+#+END_SRC
+
+* Yasnippet
+#+BEGIN_SRC emacs-lisp
+  (setq-default yas-installed-snippets-dir '("~/.emacs.d/snippets"))
+  (setq-default yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (add-to-list 'load-path "~/.emacs.d/snippets")
+  (yas-reload-all)
 #+END_SRC
 
 * Evil 
@@ -239,11 +248,11 @@
 * Dired
 ** disable space key
 #+BEGIN_SRC emacs-lisp
-  (eval-after-load "dired" '(define-key dired-mode-map (kbd "<SPC>") nil))
-  (eval-after-load "dired" '(define-key dired-mode-map (kbd "M-s") nil))
   (add-hook 'dired-mode-hook
             (lambda ()
               (evil-define-key 'normal dired-mode-map
+                (kbd "<SPC>") 'nil
+                (kbd "M-s") 'nil
                 (kbd "h") 'dired-up-directory
                 (kbd "l") 'dired-find-file
                 (kbd "gg") 'r760-dired-goto-first-file
@@ -642,5 +651,7 @@
             (lambda ()
               (lsp)
               (xref-etags-mode)
+              (yas-minor-mode)
+              (evil-local-set-key 'insert (kbd "<backtab>") 'yas-expand)
               (setq lsp-enable-indentation nil)))
 #+END_SRC

@@ -1,0 +1,8 @@
+# contributor: r760
+# name: if statement
+# key: if
+# --
+if ($1)
+{
+    $2
+}

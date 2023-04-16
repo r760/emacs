@@ -1,0 +1,8 @@
+# contributor: r760
+# name: else statement
+# key: else
+# --
+else
+{
+    $1
+}
