@@ -672,6 +672,24 @@
   (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-open-window-right)
 #+END_SRC
 
+*** ctrl + x + {+,-}
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>l")
+    (lambda ()
+      (interactive)
+      (text-scale-adjust 1)))
+
+  (evil-define-key 'normal 'global (kbd "<SPC>h")
+    (lambda ()
+      (interactive)
+      (text-scale-adjust -1)))
+
+  (evil-define-key 'normal 'global (kbd "<SPC>j")
+    (lambda ()
+      (interactive)
+      (text-scale-adjust 0)))
+#+END_SRC
+
 * C
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
