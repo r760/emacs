@@ -664,27 +664,28 @@
                       (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer)))))
 #+END_SRC
 
-*** ctrl + x + {0,1,2,3}
+*** ctrl + x + {o,0,1,2,3}
 #+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC><SPC>") 'other-window)
   (evil-define-key 'normal 'global (kbd "<SPC>0") 'delete-window)
   (evil-define-key 'normal 'global (kbd "<SPC>1") 'delete-other-windows)
   (evil-define-key 'normal 'global (kbd "<SPC>2") 'r760-open-window-below)
   (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-open-window-right)
 #+END_SRC
 
-*** ctrl + x + {+,-}
+*** ctrl + x + {+,-,0}
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>l")
+  (evil-define-key 'normal 'global (kbd "<SPC>7")
     (lambda ()
       (interactive)
       (text-scale-adjust 1)))
 
-  (evil-define-key 'normal 'global (kbd "<SPC>h")
+  (evil-define-key 'normal 'global (kbd "<SPC>8")
     (lambda ()
       (interactive)
       (text-scale-adjust -1)))
 
-  (evil-define-key 'normal 'global (kbd "<SPC>j")
+  (evil-define-key 'normal 'global (kbd "<SPC>9")
     (lambda ()
       (interactive)
       (text-scale-adjust 0)))
