@@ -172,6 +172,23 @@
     (end-of-buffer)
     (dired-previous-line 1))
 #+END_SRC
+
+*** open window below
+#+BEGIN_SRC emacs-lisp
+  (defun r760-open-window-below ()
+    (interactive)
+    (split-window-vertically)
+    (other-window 1))
+#+END_SRC
+
+*** open window to the right
+#+BEGIN_SRC emacs-lisp
+  (defun r760-open-window-right ()
+    (interactive)
+    (split-window-horizontally)
+    (other-window 1))
+#+END_SRC
+
 * Basic
 ** turn off menu-bar-mode
 #+BEGIN_SRC emacs-lisp
@@ -346,28 +363,19 @@
 *** open window below
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements "C-x 2" "open window below")
-  (global-set-key
-   (kbd "C-x 2")
-   (lambda ()
-     (interactive)
-     (split-window-vertically)
-     (other-window 1)))
+  (global-set-key (kbd "C-x 2") 'r760-open-window-below)
 #+END_SRC
 
 *** open window to the right
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements "C-x 3" "open window to the right")
-  (global-set-key
-   (kbd "C-x 3")
-   (lambda ()
-     (interactive)
-     (split-window-horizontally)
-     (other-window 1)))
+  (global-set-key (kbd "C-x 3") 'r760-open-window-right)
 #+END_SRC
 
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<SPC>b" "buffer")
   (which-key-add-key-based-replacements "<SPC>B" "bookmark")
   (which-key-add-key-based-replacements "<SPC>c" "comp/interp/dbg")
   (which-key-add-key-based-replacements "<SPC>g" "git")
@@ -425,7 +433,11 @@
 
 *** magit
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>g") 'magit-status)
+  (evil-define-key 'normal 'global (kbd "<SPC>g")
+    (lambda ()
+      (interactive)
+      (magit-status)
+      (delete-other-windows)))
 #+END_SRC
 
 *** run shell command
@@ -546,9 +558,19 @@
   (evil-define-key 'normal 'global (kbd "<SPC>r") 'recentf-open-files)
 #+END_SRC
 
+*** save buffer
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>bs") 'save-buffer)
+#+END_SRC
+
+*** revert buffer
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>br") 'revert-buffer)
+#+END_SRC
+
 *** list buffers
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>b") 'helm-buffers-list)
+  (evil-define-key 'normal 'global (kbd "<SPC>bl") 'helm-buffers-list)
 #+END_SRC
 
 *** kill buffer
@@ -640,6 +662,14 @@
                     (let ((orig-buffer (buffer-name)))
                       (previous-buffer)
                       (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer)))))
+#+END_SRC
+
+*** ctrl + x + {0,1,2,3}
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>0") 'delete-window)
+  (evil-define-key 'normal 'global (kbd "<SPC>1") 'delete-other-windows)
+  (evil-define-key 'normal 'global (kbd "<SPC>2") 'r760-open-window-below)
+  (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-open-window-right)
 #+END_SRC
 
 * C
