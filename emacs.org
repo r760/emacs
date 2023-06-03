@@ -83,6 +83,10 @@
       (if (file-exists-p fpath) nil
         (insert "* TIMESHEET")
         (org-clock-report)
+        (end-of-buffer)
+        (insert "** PROJECT")
+        (org-clock-in)
+        (show-all)
         (save-buffer))
       (end-of-buffer)))
 #+END_SRC
@@ -324,7 +328,7 @@
 * Electric pair
 ** turn on electric-pair-mode
 #+BEGIN_SRC emacs-lisp
-  (electric-pair-mode t)
+  ;;(electric-pair-mode t)
 #+END_SRC
 
 * Winner
@@ -375,7 +379,7 @@
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>b" "buffer")
+  (which-key-add-key-based-replacements "<SPC>;" "current buffer")
   (which-key-add-key-based-replacements "<SPC>B" "bookmark")
   (which-key-add-key-based-replacements "<SPC>c" "comp/interp/dbg")
   (which-key-add-key-based-replacements "<SPC>g" "git")
@@ -392,19 +396,19 @@
 
 *** compile
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f6>") 'compile)
+  (global-set-key (kbd "<f3>") 'compile)
   (evil-define-key 'normal 'global (kbd "<SPC>cc") 'compile)
 #+END_SRC
 
 *** recompile
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f5>") 'recompile)
+  (global-set-key (kbd "<f4>") 'recompile)
   (evil-define-key 'normal 'global (kbd "<SPC>cr") 'recompile)
 #+END_SRC
 
 *** revert-buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f7>") 'revert-buffer)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
 #+END_SRC
 
 *** next-error
@@ -560,17 +564,17 @@
 
 *** save buffer
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bs") 'save-buffer)
+  (evil-define-key 'normal 'global (kbd "<SPC>;s") 'save-buffer)
 #+END_SRC
 
 *** revert buffer
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>br") 'revert-buffer)
+  (evil-define-key 'normal 'global (kbd "<SPC>;r") 'revert-buffer)
 #+END_SRC
 
 *** list buffers
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>bl") 'helm-buffers-list)
+  (evil-define-key 'normal 'global (kbd "<SPC>b") 'helm-buffers-list)
 #+END_SRC
 
 *** kill buffer
@@ -675,16 +679,19 @@
 
 *** ctrl + x + {+,-,0}
 #+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<SPC>7" "zoom out")
   (evil-define-key 'normal 'global (kbd "<SPC>7")
-    (lambda ()
-      (interactive)
-      (text-scale-adjust 1)))
-
-  (evil-define-key 'normal 'global (kbd "<SPC>8")
     (lambda ()
       (interactive)
       (text-scale-adjust -1)))
 
+  (which-key-add-key-based-replacements "<SPC>8" "zoom in")
+  (evil-define-key 'normal 'global (kbd "<SPC>8")
+    (lambda ()
+      (interactive)
+      (text-scale-adjust 1)))
+
+  (which-key-add-key-based-replacements "<SPC>9" "zoom reset")
   (evil-define-key 'normal 'global (kbd "<SPC>9")
     (lambda ()
       (interactive)
@@ -695,7 +702,7 @@
 ** enable lsp-mode, and disable lsp-indentation
 #+BEGIN_SRC emacs-lisp
   (setq c-default-style "k&r")
-  (setq-default c-basic-offset 4)
+  (setq-default c-basic-offset 2)
   (add-hook 'c-mode-hook
             (lambda ()
               (lsp)
