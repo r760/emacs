@@ -277,7 +277,8 @@
                 (kbd "h") 'dired-up-directory
                 (kbd "l") 'dired-find-file
                 (kbd "gg") 'r760-dired-goto-first-file
-                (kbd "G") 'r760-dired-goto-last-file)))
+                (kbd "G") 'r760-dired-goto-last-file)
+              (auto-revert-mode)))
   #+END_SRC
 
 * Recentf
@@ -710,4 +711,10 @@
               (yas-minor-mode)
               (evil-local-set-key 'insert (kbd "<backtab>") 'yas-expand)
               (setq lsp-enable-indentation nil)))
+#+END_SRC
+
+* Startup
+** server
+#+BEGIN_SRC emacs-lisp
+  (server-start)
 #+END_SRC
