@@ -234,9 +234,9 @@
   (setq x-select-enable-clipboard t)
 #+END_SRC
 
-** set default window split direction to horizontal
+** set default window split direction to vertical
 #+BEGIN_SRC emacs-lisp
-  ;; (setq split-width-threshold nil)
+  (setq split-width-threshold 1)
 #+END_SRC
 
 ** set backup-saves directory
