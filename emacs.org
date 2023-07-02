@@ -49,6 +49,7 @@
 #+BEGIN_SRC emacs-lisp
   (evil-collection-init '(magit))
   (evil-collection-init '(dired))
+  (evil-collection-init '(compile))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
