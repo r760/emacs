@@ -267,6 +267,11 @@
   (setq r760-mark-index 0)
 #+END_SRC
 
+** highlight line
+#+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode 1)
+#+END_SRC
+
 * Dired
 ** disable space key
 #+BEGIN_SRC emacs-lisp
