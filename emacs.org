@@ -31,6 +31,12 @@
   (require 'yasnippet)
 #+END_SRC
 
+* Load custom packages
+** mark
+#+BEGIN_SRC emacs-lisp
+  (load "~/.emacs.d/mark.el")
+#+END_SRC
+
 * Yasnippet
 #+BEGIN_SRC emacs-lisp
   (setq-default yas-installed-snippets-dir '("~/.emacs.d/snippets"))
@@ -50,6 +56,7 @@
   (evil-collection-init '(magit))
   (evil-collection-init '(dired))
   (evil-collection-init '(compile))
+  (evil-collection-init '(help))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
@@ -88,78 +95,13 @@
         (insert "** PROJECT")
         (org-clock-in)
         (show-all)
-        (save-buffer))
-      (end-of-buffer)))
-#+END_SRC
-
-*** print mark list
-#+BEGIN_SRC emacs-lisp
-  (defun r760-print-mark-list ()
-    ;; print r760-mark list
-    (interactive)
-    (print r760-mark))
-#+END_SRC
-
-*** save mark
-#+BEGIN_SRC emacs-lisp
-  (defun r760-save-mark ()
-    ;; save mark ie. current buffer-name, point to r760-mark list
-    (interactive)
-    (let ((buffer-name (buffer-name)) (buffer-pos (point)))
-      (setq r760-mark (delete-dups (append r760-mark (list (list buffer-name buffer-pos)))))))
-#+END_SRC
-
-*** delete mark
-#+BEGIN_SRC emacs-lisp
-  (defun r760-delete-mark ()
-    ;; delete mark ie. current buffer-name, point from r760-mark list
-    (interactive)
-    (let ((buffer-name (buffer-name)) (buffer-pos (point)))
-      (let ((mark (list buffer-name buffer-pos)))
-        (when (-contains-p r760-mark mark)
-          (setq r760-mark (delete mark r760-mark))
-          (setq r760-mark-index (- r760-mark-index 1))))))
-#+END_SRC
-
-*** delete all marks
-#+BEGIN_SRC emacs-lisp
-  (defun r760-delete-all-marks ()
-    ;; delete all marks from r760-mark list
-    (interactive)
-    (setq r760-mark '())
-    (setq r760-mark-index 0))
-#+END_SRC
-
-*** cycle mark forward
-#+BEGIN_SRC emacs-lisp
-  (defun r760-cycle-marks-forward ()
-    ;; jump to next mark in r760-mark list
-    (interactive)
-    (let ((number-of-marks (length r760-mark)))
-      (when (>= number-of-marks 1) 
-        (setq r760-mark-index (+ r760-mark-index 1))
-        (if (or (<= r760-mark-index -1) (>= r760-mark-index number-of-marks))
-            (setq r760-mark-index 0))
-        (let ((mark (nth r760-mark-index r760-mark)))
-          (let ((buffer-name (nth 0 mark)) (buffer-pos (nth 1 mark)))
-            (switch-to-buffer buffer-name)
-            (goto-char buffer-pos))))))
-#+END_SRC
-
-*** cycle mark backward
-#+BEGIN_SRC emacs-lisp
-  (defun r760-cycle-marks-backward ()
-    ;; jump to previous mark in r760-mark list
-    (interactive)
-    (let ((number-of-marks (length r760-mark)))
-      (when (>= number-of-marks 1) 
-        (setq r760-mark-index (- r760-mark-index 1))
-        (if (or (<= r760-mark-index -1) (>= r760-mark-index number-of-marks))
-            (setq r760-mark-index (- number-of-marks 1)))
-        (let ((mark (nth r760-mark-index r760-mark)))
-          (let ((buffer-name (nth 0 mark)) (buffer-pos (nth 1 mark)))
-            (switch-to-buffer buffer-name)
-            (goto-char buffer-pos))))))
+        (save-buffer)
+        (end-of-buffer))
+      (save-excursion
+        (while (search-backward-regexp "CLOCK:" nil t)
+          (org-ctrl-c-ctrl-c))
+        (if (search-backward-regexp "BEGIN" nil t)
+            (org-ctrl-c-ctrl-c)))))
 #+END_SRC
 
 *** dired goto first file
@@ -387,7 +329,6 @@
 *** groups
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements "<SPC>;" "current buffer")
-  (which-key-add-key-based-replacements "<SPC>B" "bookmark")
   (which-key-add-key-based-replacements "<SPC>c" "comp/interp/dbg")
   (which-key-add-key-based-replacements "<SPC>g" "git")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
@@ -549,19 +490,9 @@
       (org-export-dispatch)))
 #+END_SRC
 
-*** set bookmark
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>Bs") 'bookmark-set)
-#+END_SRC
-
-*** delete bookmark
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>Bd") 'bookmark-delete)
-#+END_SRC
-
 *** list bookmarks
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>Bl") 'helm-bookmarks)
+  (evil-define-key 'normal 'global (kbd "<SPC>B") 'helm-bookmarks)
 #+END_SRC
 
 *** open a recent file
@@ -577,6 +508,35 @@
 *** revert buffer
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal 'global (kbd "<SPC>;r") 'revert-buffer)
+#+END_SRC
+
+*** list matching lines
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>;l") 'list-matching-lines)
+#+END_SRC
+
+*** copy matching lines
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>;c") 'copy-matching-lines)
+#+END_SRC
+
+*** kill matching lines
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>;k") 'kill-matching-lines)
+#+END_SRC
+
+*** delete non matching lines
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<SPC>;d") 'delete-non-matching-lines)
+#+END_SRC
+
+*** make current file executable
+#+BEGIN_SRC emacs-lisp
+  (which-key-add-key-based-replacements "<SPC>;x" "make executable")
+  (evil-define-key 'normal 'global (kbd "<SPC>;x")
+    (lambda ()
+      (interactive)
+      (shell-command-to-string (message "%s %s" "chmod +x" (buffer-file-name)))))
 #+END_SRC
 
 *** list buffers
@@ -619,40 +579,24 @@
   (evil-define-key 'normal 'global (kbd "<SPC>p") 'helm-show-kill-ring)
 #+END_SRC
 
-*** save mark
+*** set mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-e")
-                  (lambda ()
-                    (interactive)
-                    (r760-save-mark)
-                    (message "Mark saved")))
+  (global-set-key (kbd "M-e") 'r760-set-mark)
 #+END_SRC
 
 *** delete mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-r")
-                  (lambda ()
-                    (interactive)
-                    (r760-delete-mark)
-                    (message "Mark deleted")))
+  (global-set-key (kbd "M-r") 'r760-delete-mark)
 #+END_SRC
 
-*** cycle mark forward
+*** go to next mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-w")
-                  (lambda ()
-                    (interactive)
-                    (r760-cycle-marks-forward)
-                    (message "Mark cycled")))
+  (global-set-key (kbd "M-w") 'r760-next-mark)
 #+END_SRC
 
-*** cycle mark backward
+*** go to previous mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-q")
-                  (lambda ()
-                    (interactive)
-                    (r760-cycle-marks-backward)
-                    (message "Mark cycled")))
+  (global-set-key (kbd "M-q") 'r760-previous-mark)
 #+END_SRC
 
 *** next-user-buffer
