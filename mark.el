@@ -21,13 +21,15 @@ Version: 2023-07-15"
 (defun r760-delete-mark ()
   "Delete mark at the current line or delete all marks in the current buffer if called with prefix argument.
 
-Version: 2023-07-15"
+Version: 2023-07-18"
   (interactive)
   (let ((r760-mark (concat (r760-mark-prefix) "r760-mark-tag")))
     (if current-prefix-arg
 	(progn
-	  (delete-matching-lines r760-mark)
-	  (message "All marks deleted in the current buffer"))
+	  (save-excursion
+	    (beginning-of-buffer)
+	    (delete-matching-lines r760-mark)
+	    (message "All marks deleted in the current buffer")))
       (progn
 	(if (string-equal (buffer-substring-no-properties (line-beginning-position) (line-end-position)) r760-mark)
 	    (progn
