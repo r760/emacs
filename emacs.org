@@ -32,9 +32,12 @@
 #+END_SRC
 
 * Load custom packages
-** mark
+** motion, dired
 #+BEGIN_SRC emacs-lisp
-  (load "~/.emacs.d/mark.el")
+  (load "~/.emacs.d/motion.el")
+  (load "~/.emacs.d/dired.el")
+#+END_SRC
+
 #+END_SRC
 
 * Yasnippet
@@ -70,23 +73,18 @@
 #+END_SRC
 
 * Functions
-** adding new functions
-*** is-user-buffer
+** timesheet
 #+BEGIN_SRC emacs-lisp
-  (defun r760-is-user-buffer()
-    "check if current buffer is a user buffer"
-    (interactive)
-    (if (and (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name))) (not (or (string-match ".*magit.*" (format "%S" major-mode)) (string-equal major-mode "dired-mode")))) t 'nil))
-#+END_SRC
+  (defun r760-timesheet (dir-path)
+    "Open timesheet (create one in `dir-path' if it does not exist) and update clock report.
 
-*** open-timesheet
-#+BEGIN_SRC emacs-lisp
-  (defun r760-timesheet (timesheet-dir-path)
-    "open timesheet (or create it in the give timesheet-dir-path, if it does not exist)"
+Version: 2023-07-20"
     (interactive)
-    (let (fpath)
-      (if (not (file-directory-p timesheet-dir-path)) (dired-create-directory timesheet-path))
-      (setq fpath (concat timesheet-dir-path "/" (format-time-string "%Y-%m-%d") ".org"))
+    (let ((fpath nil))
+      (if (not (file-directory-p dir-path))
+          (dired-create-directory timesheet-path)
+        nil)
+      (setq fpath (concat dir-path "/" (format-time-string "%Y-%m-%d") ".org"))
       (find-file fpath)
       (if (file-exists-p fpath) nil
         (insert "* TIMESHEET")
@@ -102,38 +100,6 @@
           (org-ctrl-c-ctrl-c))
         (if (search-backward-regexp "BEGIN" nil t)
             (org-ctrl-c-ctrl-c)))))
-#+END_SRC
-
-*** dired goto first file
-#+BEGIN_SRC emacs-lisp
-  (defun r760-dired-goto-first-file()
-    (interactive)
-    (beginning-of-buffer)
-    (dired-next-line 4))
-#+END_SRC
-
-*** dired goto last file
-#+BEGIN_SRC emacs-lisp
-  (defun r760-dired-goto-last-file()
-    (interactive)
-    (end-of-buffer)
-    (dired-previous-line 1))
-#+END_SRC
-
-*** open window below
-#+BEGIN_SRC emacs-lisp
-  (defun r760-open-window-below ()
-    (interactive)
-    (split-window-vertically)
-    (other-window 1))
-#+END_SRC
-
-*** open window to the right
-#+BEGIN_SRC emacs-lisp
-  (defun r760-open-window-right ()
-    (interactive)
-    (split-window-horizontally)
-    (other-window 1))
 #+END_SRC
 
 * Basic
@@ -218,8 +184,8 @@
                 (kbd "M-s") 'nil
                 (kbd "h") 'dired-up-directory
                 (kbd "l") 'dired-find-file
-                (kbd "gg") 'r760-dired-goto-first-file
-                (kbd "G") 'r760-dired-goto-last-file)
+                (kbd "gg") 'r760-dired-first-file
+                (kbd "G") 'r760-dired-last-file)
               (auto-revert-mode)))
   #+END_SRC
 
@@ -309,14 +275,12 @@
 
 *** open window below
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "C-x 2" "open window below")
-  (global-set-key (kbd "C-x 2") 'r760-open-window-below)
+  (global-set-key (kbd "C-x 2") 'r760-motion-split-window-vertically)
 #+END_SRC
 
 *** open window to the right
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "C-x 3" "open window to the right")
-  (global-set-key (kbd "C-x 3") 'r760-open-window-right)
+  (global-set-key (kbd "C-x 3") 'r760-motion-split-window-horizontally)
 #+END_SRC
 
 ** adding new keybindings
@@ -575,42 +539,32 @@
 
 *** set mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-e") 'r760-set-mark)
+  (global-set-key (kbd "M-e") 'r760-motion-set-mark)
 #+END_SRC
 
 *** delete mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-r") 'r760-delete-mark)
+  (global-set-key (kbd "M-r") 'r760-motion-delete-mark)
 #+END_SRC
 
 *** go to next mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-w") 'r760-next-mark)
+  (global-set-key (kbd "M-w") 'r760-motion-next-mark)
 #+END_SRC
 
 *** go to previous mark
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-q") 'r760-previous-mark)
+  (global-set-key (kbd "M-q") 'r760-motion-previous-mark)
 #+END_SRC
 
-*** next-user-buffer
+*** next user buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-s")
-                  (lambda ()
-                    (interactive)
-                    (let ((orig-buffer (buffer-name)))
-                      (next-buffer)
-                      (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (next-buffer)))))
+  (global-set-key (kbd "M-s") 'r760-motion-next-user-buffer)
 #+END_SRC
 
-*** previous-user-buffer
+*** previous user buffer
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-a")
-                  (lambda ()
-                    (interactive)
-                    (let ((orig-buffer (buffer-name)))
-                      (previous-buffer)
-                      (while (and (not (r760-is-user-buffer)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer)))))
+  (global-set-key (kbd "M-a") 'r760-motion-previous-user-buffer)
 #+END_SRC
 
 *** ctrl + x + {o,0,1,2,3}
@@ -618,8 +572,8 @@
   (evil-define-key 'normal 'global (kbd "<SPC><SPC>") 'other-window)
   (evil-define-key 'normal 'global (kbd "<SPC>0") 'delete-window)
   (evil-define-key 'normal 'global (kbd "<SPC>1") 'delete-other-windows)
-  (evil-define-key 'normal 'global (kbd "<SPC>2") 'r760-open-window-below)
-  (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-open-window-right)
+  (evil-define-key 'normal 'global (kbd "<SPC>2") 'r760-motion-split-window-vertically)
+  (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-motion-split-window-horizontally)
 #+END_SRC
 
 *** ctrl + x + {+,-,0}
