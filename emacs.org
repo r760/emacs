@@ -159,12 +159,12 @@
 
 ** turn on time-mode
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'display-time-mode)
+  ;;(add-hook 'after-init-hook 'display-time-mode)
 #+END_SRC
 
 ** turn on battery-mode
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'display-battery-mode)
+  ;;(add-hook 'after-init-hook 'display-battery-mode)
 #+END_SRC
 
 ** turn on line numbering for prog-mode
@@ -202,12 +202,6 @@
 #+BEGIN_SRC emacs-lisp
   (setq bookmark-save-flag 1)
   #+END_SRC
-
-** mark variables
-#+BEGIN_SRC emacs-lisp
-  (setq r760-mark '())
-  (setq r760-mark-index 0)
-#+END_SRC
 
 ** highlight line
 #+BEGIN_SRC emacs-lisp
