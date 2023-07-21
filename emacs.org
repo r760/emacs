@@ -384,12 +384,12 @@ Version: 2023-07-20"
 
 *** grep
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>ig") 'grep)
+  (evil-define-key 'normal 'global (kbd "<SPC>iG") 'grep)
 #+END_SRC
 
 *** rgrep
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>iG") 'rgrep)
+  (evil-define-key 'normal 'global (kbd "<SPC>ig") 'rgrep)
 #+END_SRC
 
 *** proced
