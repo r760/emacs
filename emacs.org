@@ -60,6 +60,8 @@
   (evil-collection-init '(dired))
   (evil-collection-init '(compile))
   (evil-collection-init '(help))
+  (evil-collection-init '(grep))
+  (evil-collection-init '(ripgrep))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
