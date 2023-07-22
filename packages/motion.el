@@ -88,7 +88,7 @@ Version: 2023-07-20"
 (defun r760-motion-next-mark ()
   "Go to the next mark in the current buffer.
 
-Version: 2023-07-20"
+Version: 2023-07-22"
   (interactive)
   (let ((spos (point)) (r760-motion (concat (r760-motion--mark-prefix) "r760-motion-tag")))
     (end-of-line)
@@ -96,8 +96,8 @@ Version: 2023-07-20"
 	(progn
 	  (beginning-of-line)
 	  (message "Mark cycled"))
-      (goto-char spos)
       (progn
+	(goto-char spos)
 	(beginning-of-buffer)
 	(if (search-forward r760-motion nil t)
 	    (progn
@@ -108,7 +108,7 @@ Version: 2023-07-20"
 (defun r760-motion-previous-mark ()
   "Go to the previous mark in the current buffer.
 
-Version: 2023-07-20"
+Version: 2023-07-22"
   (interactive)
   (let ((spos (point)) (r760-motion (concat (r760-motion--mark-prefix) "r760-motion-tag")))
     (beginning-of-line)
@@ -116,8 +116,8 @@ Version: 2023-07-20"
 	(progn
 	  (beginning-of-line)
 	  (message "Mark cycled"))
-      (goto-char spos)
       (progn
+	(goto-char spos)
 	(end-of-buffer)
 	(if (search-backward r760-motion nil t)
 	    (progn
