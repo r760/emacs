@@ -1,17 +1,17 @@
 ;; motion across windows
 
 (defun r760-motion-split-window-vertically ()
-  "Split window vertically and select it.
+  "Split the window vertically and select it.
 
-Version: 2023-07-20"
+Version: 2023-07-22"
   (interactive)
   (split-window-vertically)
   (other-window 1))
 
 (defun r760-motion-split-window-horizontally ()
-  "Split window horizontally and select it.
+  "Split the window horizontally and select it.
 
-Version: 2023-07-20"
+Version: 2023-07-22"
   (interactive)
   (split-window-horizontally)
   (other-window 1))
@@ -46,12 +46,32 @@ Version: 2023-07-20"
     (previous-buffer)
     (while (and (not (r760-motion--user-buffer-p)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer))))
 
+(require 'vterm)
+
+(defvar r760-motion--vterm-return-buffer nil
+  "The name of the buffer to return to from vterm.
+
+Version: 2023-07-22")
+
+(defun r760-motion-toggle-vterm ()
+  "Switch back and forth between the current buffer and vterm.
+
+Version: 2023-07-22"
+  (interactive)
+  (let ((cb (buffer-name)) (vtb "*vterm*"))
+    (if (string-equal cb vtb)
+	(switch-to-buffer r760-motion--vterm-return-buffer)
+      (setq r760-motion--vterm-return-buffer cb)
+      (if (not (get-buffer vtb))
+	  (vterm)
+	(switch-to-buffer vtb)))))
+
 ;; motion in current buffer
 
 (defun r760-motion--mark-prefix ()
-  "Return mark prefix for current major mode.
+  "Return the mark prefix for the current major mode.
 
-Version: 2023-07-20"
+Version: 2023-07-22"
   (cond ((string-equal major-mode "emacs-lisp-mode") ";; ")
 	((string-equal major-mode "c-mode") "// ")
 	(t "# ")))
@@ -68,9 +88,9 @@ Version: 2023-07-20"
   (message "Mark saved"))
 
 (defun r760-motion-delete-mark ()
-  "Delete mark at the current line or delete all marks in the current buffer if called with prefix argument.
+  "Delete the mark at the current line or delete all the marks in the current buffer if called with a prefix argument.
 
-Version: 2023-07-20"
+Version: 2023-07-22"
   (interactive)
   (let ((r760-motion (concat (r760-motion--mark-prefix) "r760-motion-tag")))
     (if current-prefix-arg

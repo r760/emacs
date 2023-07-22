@@ -29,6 +29,7 @@
   (require 'magit)
   (require 'evil-collection)
   (require 'yasnippet)
+  (require 'vterm)
 #+END_SRC
 
 * Load custom packages
@@ -62,6 +63,7 @@
   (evil-collection-init '(help))
   (evil-collection-init '(grep))
   (evil-collection-init '(ripgrep))
+  (evil-collection-init '(vterm))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
@@ -567,6 +569,12 @@ Version: 2023-07-20"
 *** previous user buffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-a") 'r760-motion-previous-user-buffer)
+#+END_SRC
+
+*** toggle vterm
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-t") 'r760-motion-toggle-vterm)
+  (define-key vterm-mode-map (kbd "M-t") #'r760-motion-toggle-vterm)
 #+END_SRC
 
 *** ctrl + x + {o,0,1,2,3}
