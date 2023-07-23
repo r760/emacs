@@ -25,8 +25,7 @@ Version: 2023-07-20"
   (if (and
        (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name)))
        (not (or (string-match ".*magit.*" (format "%S" major-mode)) (string-equal major-mode "dired-mode"))))
-      t
-    nil))
+      t))
 
 (defun r760-motion-next-user-buffer ()
   "Switch to the next user buffer.
