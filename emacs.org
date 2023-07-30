@@ -84,7 +84,7 @@
   (defun r760-timesheet (dir-path)
     "Open timesheet (create one in `dir-path' if it does not exist) and update clock report.
 
-  Version: 2023-07-30"
+Version: 2023-07-30"
     (interactive)
     (let ((fpath nil))
       (if (not (file-directory-p dir-path))
