@@ -19,9 +19,9 @@ Version: 2023-07-22"
 ;; motion across buffers
 
 (defun r760-motion--user-buffer-p ()
-  "Return true if the current buffer is a user buffer, false otherwise.
+  "Return true if the current buffer is a user buffer, nil otherwise.
 
-Version: 2023-07-20"
+Version: 2023-09-19"
   (if (and
        (or (not (string-match "^\*.*\*$" (buffer-name))) (string-match "^\*scratch\*.*$" (buffer-name)))
        (not (or (string-match ".*magit.*" (format "%S" major-mode)) (string-equal major-mode "dired-mode"))))
