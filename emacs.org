@@ -129,16 +129,6 @@ Version: 2023-10-08"
   (setq inhibit-splash-screen t)
 #+END_SRC
 
-** turn on time-mode
-#+BEGIN_SRC emacs-lisp
-  ;;(add-hook 'after-init-hook 'display-time-mode)
-#+END_SRC
-
-** turn on battery-mode
-#+BEGIN_SRC emacs-lisp
-  ;;(add-hook 'after-init-hook 'display-battery-mode)
-#+END_SRC
-
 ** turn on line numbering for prog-mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
