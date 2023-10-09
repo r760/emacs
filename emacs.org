@@ -25,7 +25,6 @@
   (require 'swiper)
   (require 'undo-tree)
   (require 'org)
-  (require 'openwith)
   (require 'magit)
   (require 'evil-collection)
   (require 'yasnippet)
@@ -158,12 +157,6 @@ Version: 2023-07-30"
 ** set backup-saves directory
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs-saves")))
-#+END_SRC
-
-** open PDF files with open
-#+BEGIN_SRC emacs-lisp
-  (openwith-mode t)
-  (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
 #+END_SRC
 
 ** enable repeat mode
