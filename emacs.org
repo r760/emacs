@@ -29,7 +29,6 @@
   (require 'evil-collection)
   (require 'yasnippet)
   (require 'vterm)
-  (require 'expand-region)
 #+END_SRC
 
 * Load custom packages
@@ -573,12 +572,6 @@ Version: 2023-10-08"
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-t") 'r760-motion-toggle-vterm)
   (define-key vterm-mode-map (kbd "M-t") #'r760-motion-toggle-vterm)
-#+END_SRC
-
-*** expand/contract region
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-=") 'er/expand-region)
-  (global-set-key (kbd "C-+") 'er/contract-region)
 #+END_SRC
 
 *** ctrl + x + {o,0,1,2,3}
