@@ -1,0 +1,14 @@
+# contributor: r760
+# name: function with goto
+# key: funcc
+# --
+char *
+$1 ($2)
+{
+  char *retval = NULL;
+
+  $3
+
+CLEANUP:
+  return retval;
+}

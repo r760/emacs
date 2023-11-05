@@ -1,0 +1,9 @@
+# contributor: r760
+# name: if statement with goto
+# key: ifc
+# --
+if ($1)
+{
+    retval = RSTRDUP (\"$2\");
+    goto CLEANUP;
+}
