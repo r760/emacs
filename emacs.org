@@ -18,6 +18,7 @@
 * Requires
 #+BEGIN_SRC emacs-lisp
   (require 'evil)
+  (require 'evil-numbers)
   (require 'company)
   (require 'lsp-mode)
   (require 'helm)
@@ -602,6 +603,12 @@ Version: 2023-10-08"
     (lambda ()
       (interactive)
       (text-scale-adjust 0)))
+#+END_SRC
+
+*** evil-numbers
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-n") 'evil-numbers/inc-at-pt)
+  (global-set-key (kbd "M-p") 'evil-numbers/dec-at-pt)
 #+END_SRC
 
 * C
