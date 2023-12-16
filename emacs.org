@@ -607,8 +607,8 @@ Version: 2023-10-08"
 
 *** evil-numbers
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-n") 'evil-numbers/inc-at-pt)
-  (global-set-key (kbd "M-p") 'evil-numbers/dec-at-pt)
+  (global-set-key (kbd "M-i") 'evil-numbers/inc-at-pt)
+  (global-set-key (kbd "M-d") 'evil-numbers/dec-at-pt)
 #+END_SRC
 
 * C
