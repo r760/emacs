@@ -13,6 +13,7 @@
 #+BEGIN_SRC emacs-lisp
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 #+END_SRC
 
 * Requires
