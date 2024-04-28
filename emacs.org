@@ -34,10 +34,11 @@
 #+END_SRC
 
 * Load custom packages
-** motion, dired
+** motion, dired, timesheet
 #+BEGIN_SRC emacs-lisp
   (load "~/.emacs.d/motion.el")
   (load "~/.emacs.d/dired.el")
+  (load "~/.emacs.d/timesheet.el")
 #+END_SRC
 
 #+END_SRC
@@ -79,35 +80,9 @@
   (evil-set-initial-state 'term-mode 'emacs)
 #+END_SRC
 
-* Functions
-** timesheet
+** set timeseet dir
 #+BEGIN_SRC emacs-lisp
-  (defun r760-timesheet (dir-path)
-    "Open timesheet (create one in `dir-path' if it does not exist) and update clock report.
-
-Version: 2023-10-08"
-    (interactive)
-    (let ((fpath nil))
-      (if (not (file-directory-p dir-path))
-          (dired-create-directory timesheet-path)
-        nil)
-      (setq fpath (concat dir-path "/" (format-time-string "%Y-%m-%d") ".org"))
-      (find-file fpath)
-      (if (file-exists-p fpath) nil
-        (insert "* TIMESHEET")
-        (org-clock-report)
-        (end-of-buffer)
-        (insert "** PROJECT")
-        (org-clock-in)
-        (org-show-all)
-        (save-buffer)
-        (end-of-buffer))
-      (save-excursion
-        (end-of-buffer)
-        (while (search-backward-regexp "CLOCK:" nil t)
-          (org-ctrl-c-ctrl-c))
-        (if (search-backward-regexp "BEGIN" nil t)
-            (org-ctrl-c-ctrl-c)))))
+ (setq r760-timesheet-dir "~/wlog") 
 #+END_SRC
 
 * Basic
@@ -440,16 +415,16 @@ Version: 2023-10-08"
   (evil-define-key 'normal 'global (kbd "<SPC>o")
     (lambda ()
       (interactive)
-      (r760-timesheet "~/wlog")))
+      (r760-timesheet)))
 #+END_SRC
 
-*** org export
+*** open weekly timesheet report
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>O" "org-export-dispatch")
+  (which-key-add-key-based-replacements "<SPC>O" "open weekly timesheet report")
   (evil-define-key 'normal 'global (kbd "<SPC>O")
     (lambda ()
       (interactive)
-      (org-export-dispatch)))
+      (r760-timesheet-weekly-report)))
 #+END_SRC
 
 *** list bookmarks
@@ -630,5 +605,6 @@ Version: 2023-10-08"
 * Startup
 ** server
 #+BEGIN_SRC emacs-lisp
+  (server-force-delete)
   (server-start)
 #+END_SRC
