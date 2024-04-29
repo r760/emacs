@@ -77,10 +77,10 @@ Version: 2024-04-28"
 
 Version: 2024-04-28"
   (interactive)
-  (let ((fpath nil) (lst nil))
-    (if (get-buffer "*timesheet*")
-	(kill-buffer "*timesheet*"))
-    (switch-to-buffer "*timesheet*")
+  (let ((fpath nil) (lst nil) (sbuff "*timesheet*"))
+    (if (get-buffer sbuff)
+	(kill-buffer sbuff))
+    (switch-to-buffer sbuff)
     (setq lst (r760-timesheet--week))
     (insert "| Date | Time |")
     (newline)
