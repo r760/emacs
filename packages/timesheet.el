@@ -102,3 +102,47 @@ Version: 2024-04-28"
     (newline)
     (insert "#+TBLFM: @>$2=vsum(@I..@II);T")
     (org-ctrl-c-ctrl-c)))
+
+(defun r760-timesheet--month ()
+  "Get a list of all timesheet file paths for this month.
+
+Version: 2024-04-28"
+  (let ((year nil) (month nil) (day nil) (sday nil) (lst nil))
+    (setq year (format-time-string "%Y"))
+    (setq month (format-time-string "%m"))
+    (setq day 1)
+    (while (<= day 31)
+      (setq sday (number-to-string day))
+      (if (<= day 9)
+	  (setq sday (concat "0" sday)))
+      (setq lst (cons (concat r760-timesheet-dir "/" year "-" month "-" sday ".org") lst))
+      (setq day (+ day 1)))
+    (nreverse lst)))
+
+(defun r760-timesheet-month ()
+  "Open all timesheets for this month.
+
+Version: 2024-04-28"
+  (interactive)
+  (let ((fpath nil) (lst nil) (sbuff "*timesheet*") (min nil) (max nil))
+    (if (get-buffer sbuff)
+	(kill-buffer sbuff))
+    (switch-to-buffer sbuff)
+    (setq lst (r760-timesheet--month))
+    (while lst
+      (setq fpath (pop lst))
+      (if (file-exists-p fpath)
+	  (progn 
+	    (end-of-buffer)
+	    (setq min (point))
+	    (insert-file-contents fpath)
+	    (goto-char min)
+	    (re-search-forward "TIMESHEET")
+	    (setq max (point))
+	    (print (buffer-substring min max))
+	    (setq fpath (replace-regexp-in-string ".*\/" "" fpath))
+	    (setq fpath (replace-regexp-in-string "\.org" "" fpath))
+	    (replace-string "TIMESHEET" fpath nil min max))
+	nil))
+    (org-mode)
+    (org-table-align)))
