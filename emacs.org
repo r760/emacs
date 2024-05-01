@@ -434,43 +434,45 @@
   (evil-define-key 'normal 'global (kbd "<SPC>r") 'recentf-open-files)
 #+END_SRC
 
-*** save buffer
+*** current buffer menu
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>;s") 'save-buffer)
-#+END_SRC
-
-*** revert buffer
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>;r") 'revert-buffer)
-#+END_SRC
-
-*** list matching lines
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>;l") 'list-matching-lines)
-#+END_SRC
-
-*** copy matching lines
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>;c") 'copy-matching-lines)
-#+END_SRC
-
-*** kill matching lines
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>;k") 'kill-matching-lines)
-#+END_SRC
-
-*** delete non matching lines
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>;d") 'delete-non-matching-lines)
-#+END_SRC
-
-*** make current file executable
-#+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>;x" "make executable")
-  (evil-define-key 'normal 'global (kbd "<SPC>;x")
-    (lambda ()
-      (interactive)
-      (shell-command-to-string (message "%s %s" "chmod +x" (buffer-file-name)))))
+  (defun r760-make-buffer-file-executable ()
+    (interactive)
+    (shell-command-to-string (message "%s %s" "chmod +x" (buffer-file-name))))
+  (transient-define-prefix r760-current-buffer-menu ()
+    "Currrent Buffer Menu"
+    [
+     ["Buffer"
+      ("s"
+       "save"
+       save-buffer
+       :transient nil)
+      ("r"
+       "revert"
+       revert-buffer
+       :transient nil)
+      ("l"
+       "list matching lines"
+       list-matching-lines
+       :transient nil)
+      ("c"
+       "copy matching lines"
+        copy-matching-lines
+       :transient nil)
+      ("k"
+       "kill matching lines"
+       kill-matching-lines
+       :transient nil)
+      ("d"
+       "delete non matching lines"
+       delete-non-matching-lines
+       :transient nil)
+      ("x"
+       "make current buffer file executable"
+       r760-make-buffer-file-executable
+       :transient nil)
+      ]])
+  (evil-define-key 'normal 'global (kbd "<SPC>;") 'r760-current-buffer-menu)
 #+END_SRC
 
 *** list buffers
