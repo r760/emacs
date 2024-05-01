@@ -75,13 +75,17 @@ Version: 2024-04-28"
 (defun r760-timesheet-weekly-report ()
   "Open weekly timesheet report.
 
-Version: 2024-04-28"
+Version: 2024-04-30"
   (interactive)
   (let ((fpath nil) (lst nil) (sbuff "*timesheet*"))
     (if (get-buffer sbuff)
 	(kill-buffer sbuff))
     (switch-to-buffer sbuff)
     (setq lst (r760-timesheet--week))
+    (insert "* WEEKLY TIMESHEET REPORT")
+    (newline)
+    (insert "#+BEGIN:")
+    (newline)
     (insert "| Date | Time |")
     (newline)
     (insert "|-------+-------|")
@@ -101,6 +105,10 @@ Version: 2024-04-28"
     (insert "| Total | 00:00:00 |")
     (newline)
     (insert "#+TBLFM: @>$2=vsum(@I..@II);T")
+    (newline)
+    (insert "#+END")
+    (beginning-of-buffer)
+    (search-forward "Total")
     (org-ctrl-c-ctrl-c)))
 
 (defun r760-timesheet--month ()
@@ -152,7 +160,7 @@ Version: 2024-04-28"
 (transient-define-prefix r760-timesheet-menu ()
   "Timesheet Menu"
   [["Open (or create)"
-    ("t"
+    ("o"
      "today's timesheet"
      r760-timesheet
      :transient nil)
