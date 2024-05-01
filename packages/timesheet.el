@@ -108,7 +108,7 @@ Version: 2024-04-30"
     (newline)
     (insert "#+END")
     (beginning-of-buffer)
-    (search-forward "Total")
+    (search-forward "TBLFM")
     (org-ctrl-c-ctrl-c)))
 
 (defun r760-timesheet--month ()
@@ -171,4 +171,8 @@ Version: 2024-04-28"
     ("m"
      "all timesheets for this month"
      r760-timesheet-month
+     :transient nil)
+    ("x"
+     "org export dispath"
+     org-export-dispatch
      :transient nil)]])
