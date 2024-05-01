@@ -599,6 +599,14 @@
               (setq lsp-enable-indentation nil)))
 #+END_SRC
 
+* JS
+** js-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'js-mode-hook
+            (lambda ()
+               (local-set-key (kbd "C-c C-c") 'json-pretty-print-buffer)))
+#+END_SRC
+
 * Startup
 ** server
 #+BEGIN_SRC emacs-lisp
