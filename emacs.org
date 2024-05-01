@@ -596,6 +596,8 @@
               (xref-etags-mode)
               (yas-minor-mode)
               (evil-local-set-key 'insert (kbd "<backtab>") 'yas-expand)
+              (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
+              (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
               (setq lsp-enable-indentation nil)))
 #+END_SRC
 
