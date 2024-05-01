@@ -312,7 +312,7 @@
        "interpret"
        executable-interpret (buffer-file-name)
        :transient nil)]
-     ["Evaluate"
+     ["Evaluate LISP"
       ("b"
        "evaluate buffer"
        eval-buffer
@@ -325,7 +325,17 @@
       ("g"
        "gdb"
        gdb
-       :transient nil)]])
+       :transient nil)]
+     ["Shell"
+      ("s"
+       "shell command"
+       shell-command
+       :transient nil)
+      ("a"
+       "async shell command"
+       async-shell-command
+       :transient nil)
+      ]])
   (evil-define-key 'normal 'global (kbd "<SPC>c") 'r760-compile-menu)
 #+END_SRC
 
@@ -336,16 +346,6 @@
       (interactive)
       (magit-status)
       (delete-other-windows)))
-#+END_SRC
-
-*** run shell command
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>sc") 'shell-command)
-#+END_SRC
-
-*** run async shell command
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>sa") 'async-shell-command)
 #+END_SRC
 
 *** open a mini bash terminal below
