@@ -31,6 +31,7 @@
   (require 'evil-collection)
   (require 'yasnippet)
   (require 'vterm)
+  (require 'transient)
 #+END_SRC
 
 * Load custom packages
@@ -266,7 +267,7 @@
 *** groups
 #+BEGIN_SRC emacs-lisp
   (which-key-add-key-based-replacements "<SPC>;" "current buffer")
-  (which-key-add-key-based-replacements "<SPC>c" "comp/interp/dbg")
+  (which-key-add-key-based-replacements "<SPC>c" "compile menu")
   (which-key-add-key-based-replacements "<SPC>g" "git")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
   (which-key-add-key-based-replacements "<SPC>s" "shell/terminal")
@@ -279,45 +280,53 @@
   (global-set-key (kbd "C-x e") 'eval-buffer)
 #+END_SRC
 
-*** compile
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f3>") 'compile)
-  (evil-define-key 'normal 'global (kbd "<SPC>cc") 'compile)
-#+END_SRC
-
-*** recompile
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f4>") 'recompile)
-  (evil-define-key 'normal 'global (kbd "<SPC>cr") 'recompile)
-#+END_SRC
-
 *** revert-buffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") 'revert-buffer)
 #+END_SRC
 
-*** next-error
+*** compile menu
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>cn") 'next-error)
-#+END_SRC
-
-*** previous-error
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>cp") 'previous-error)
-#+END_SRC
-
-*** gdb
-#+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<SPC>cd") 'gdb)
-#+END_SRC
-
-*** interpret current file
-#+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>ci" "interpret current file")
-  (evil-define-key 'normal 'global (kbd "<SPC>ci")
-    (lambda ()
-      (interactive)
-      (executable-interpret (buffer-file-name))))
+  (transient-define-prefix r760-compile-menu ()
+    "Compile/Interpret/Evaluate/Debug Menu"
+    [
+     ["Compile"
+      ("c"
+       "compile"
+       compile
+       :transient nil)
+      ("r"
+       "recompile"
+       recompile
+       :transient nil)
+      ("n"
+       "next error"
+       next-error
+       :transient nil)
+      ("p"
+       "previous error"
+       previous-error
+       :transient nil)]
+     ["Interpret"
+      ("i"
+       "interpret"
+       executable-interpret (buffer-file-name)
+       :transient nil)]
+     ["Evaluate"
+      ("b"
+       "evaluate buffer"
+       eval-buffer
+       :transient nil)
+      ("l"
+       "evaluate last sexp"
+       eval-last-sexp
+       :transient nil)]
+     ["Debug"
+      ("g"
+       "gdb"
+       gdb
+       :transient nil)]])
+  (evil-define-key 'normal 'global (kbd "<SPC>c") 'r760-compile-menu)
 #+END_SRC
 
 *** magit
