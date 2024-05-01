@@ -409,22 +409,10 @@
       (org-babel-load-file "~/.emacs.d/emacs.org")))
 #+END_SRC
 
-*** open timesheet
+*** timesheet menu
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>o" "open timesheet")
-  (evil-define-key 'normal 'global (kbd "<SPC>o")
-    (lambda ()
-      (interactive)
-      (r760-timesheet)))
-#+END_SRC
-
-*** open weekly timesheet report
-#+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>O" "open weekly timesheet report")
-  (evil-define-key 'normal 'global (kbd "<SPC>O")
-    (lambda ()
-      (interactive)
-      (r760-timesheet-weekly-report)))
+  (which-key-add-key-based-replacements "<SPC>o" "open timesheet menu")
+  (evil-define-key 'normal 'global (kbd "<SPC>o") 'r760-timesheet-menu)
 #+END_SRC
 
 *** list bookmarks
