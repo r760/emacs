@@ -154,25 +154,3 @@ Version: 2024-04-28"
 	nil))
     (org-mode)
     (org-table-align)))
-
-(require 'transient)
-
-(transient-define-prefix r760-timesheet-menu ()
-  "Timesheet Menu"
-  [["Open (or create)"
-    ("o"
-     "today's timesheet"
-     r760-timesheet
-     :transient nil)
-    ("w"
-     "weekly report"
-     r760-timesheet-weekly-report
-     :transient nil)
-    ("m"
-     "all timesheets for this month"
-     r760-timesheet-month
-     :transient nil)
-    ("x"
-     "org export dispath"
-     org-export-dispatch
-     :transient nil)]])

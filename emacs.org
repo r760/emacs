@@ -69,6 +69,7 @@
   (evil-collection-init '(vterm))
   (evil-collection-init '(man))
   (evil-collection-init '(xref))
+  (evil-collection-init '(org))
 #+END_SRC
 
 ** use undo-tree for undo/redo in evil mode
@@ -266,8 +267,8 @@
 ** adding new keybindings
 *** groups
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>;" "current buffer")
-  (which-key-add-key-based-replacements "<SPC>c" "compile menu")
+  (which-key-add-key-based-replacements "<SPC>;" "current buffer menu")
+  (which-key-add-key-based-replacements "<SPC>c" "exec menu")
   (which-key-add-key-based-replacements "<SPC>g" "git")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
   (which-key-add-key-based-replacements "<SPC>s" "shell/terminal")
@@ -287,7 +288,7 @@
 
 *** compile menu
 #+BEGIN_SRC emacs-lisp
-  (transient-define-prefix r760-compile-menu ()
+  (transient-define-prefix r760-exec-menu ()
     "Compile/Interpret/Evaluate/Debug Menu"
     [
      ["Compile"
@@ -336,7 +337,7 @@
        async-shell-command
        :transient nil)
       ]])
-  (evil-define-key 'normal 'global (kbd "<SPC>c") 'r760-compile-menu)
+  (evil-define-key 'normal 'global (kbd "<SPC>c") 'r760-exec-menu)
 #+END_SRC
 
 *** magit
@@ -346,18 +347,6 @@
       (interactive)
       (magit-status)
       (delete-other-windows)))
-#+END_SRC
-
-*** open a mini bash terminal below
-#+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>st" "open a mini terminal below")
-  (evil-define-key 'normal 'global (kbd "<SPC>st")
-    (lambda ()
-      (interactive)
-      (split-window-vertically)
-      (other-window 1)
-      (shrink-window 10)
-      (term "/bin/bash")))
 #+END_SRC
 
 *** imenu
@@ -418,10 +407,57 @@
       (org-babel-load-file "~/.emacs.d/emacs.org")))
 #+END_SRC
 
-*** timesheet menu
+*** org menu
 #+BEGIN_SRC emacs-lisp
-  (which-key-add-key-based-replacements "<SPC>o" "open timesheet menu")
-  (evil-define-key 'normal 'global (kbd "<SPC>o") 'r760-timesheet-menu)
+  (setq org-agenda-files '("~/todo.org"))
+  (which-key-add-key-based-replacements "<SPC>o" "org menu")
+  (transient-define-prefix r760-org-menu ()
+    "Org Menu"
+    [["Org"
+      ("x"
+       "org export dispath"
+       org-export-dispatch
+       :transient nil)]
+     ["Timesheet"
+      ("o"
+       "open today's timesheet"
+       r760-timesheet
+       :transient nil)
+      ("w"
+       "open weekly report"
+       r760-timesheet-weekly-report
+       :transient nil)
+      ("m"
+       "open all timesheets for this month"
+       r760-timesheet-month
+       :transient nil)]
+     ["Agenda"
+      ("l"
+       "org todo list"
+       org-todo-list
+       :transient nil)
+      ("t"
+       "open todo"
+       (lambda ()
+         (interactive)
+         (find-file "~/todo.org"))
+       :transient nil)]])
+  (evil-define-key 'normal 'global (kbd "<SPC>o") 'r760-org-menu)
+#+END_SRC
+
+*** org agenda keybindings
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load 'org-agenda
+    '(progn
+       (evil-set-initial-state 'org-agenda-mode 'normal)
+       (evil-define-key 'normal org-agenda-mode-map
+         (kbd "<RET>") 'org-agenda-switch-to
+         ;;(kbd "\t") 'org-agenda-goto
+         (kbd "Tab") 'org-agenda-goto
+         "q" 'org-agenda-quit
+         "t" 'org-agenda-todo
+         "j" 'org-agenda-next-line
+         "k" 'org-agenda-previous-line)))
 #+END_SRC
 
 *** list bookmarks
