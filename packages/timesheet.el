@@ -12,7 +12,7 @@ Version: 2024-04-28"
 (defun r760-timesheet ()
   "Open today's timesheet and update clock report.
 
-Version: 2024-04-28"
+Version: 2024-05-25"
   (interactive)
   (let ((fpath nil))
     (if (not (file-directory-p r760-timesheet-dir))
@@ -26,6 +26,7 @@ Version: 2024-04-28"
       (end-of-buffer)
       (insert "** PROJECT")
       (org-clock-in)
+      (org-clock-out)
       (org-show-all)
       (save-buffer)
       (end-of-buffer))
@@ -75,7 +76,7 @@ Version: 2024-04-28"
 (defun r760-timesheet-weekly-report ()
   "Open weekly timesheet report.
 
-Version: 2024-04-30"
+Version: 2024-05-25"
   (interactive)
   (let ((fpath nil) (lst nil) (sbuff "*timesheet*"))
     (if (get-buffer sbuff)
@@ -95,10 +96,7 @@ Version: 2024-04-30"
       (if (file-exists-p fpath)
 	  (progn 
 	    (insert (r760-timesheet--summary fpath))
-	    (newline))
-	(progn
-	  (insert (concat "| " (replace-regexp-in-string "\.org" "" (replace-regexp-in-string ".*/" "" fpath)) " | 0:00 |"))
-	  (newline))))
+	    (newline))))
     (org-mode)
     (insert "|------------+----------|")
     (newline)
