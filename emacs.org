@@ -40,7 +40,6 @@
   (load "~/.emacs.d/motion.el")
   (load "~/.emacs.d/dired.el")
   (load "~/.emacs.d/timesheet.el")
-  (load "~/.emacs.d/js.el")
 #+END_SRC
 
 #+END_SRC
@@ -645,18 +644,7 @@
 #+BEGIN_SRC emacs-lisp
   (add-hook 'js-mode-hook
             (lambda ()
-              (local-set-key (kbd "C-c C-c") 'json-pretty-print-buffer)
-              (evil-local-set-key 'normal (kbd "C-n") 'r760-js-next-token)
-              (evil-local-set-key 'normal (kbd "C-p") 'r760-js-previous-token)))
-#+END_SRC
-
-* Makefile
-** makefile-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'makefile-mode-hook
-            (lambda ()
-              (evil-local-set-key 'normal (kbd "C-n") 'r760-js-next-token)
-              (evil-local-set-key 'normal (kbd "C-p") 'r760-js-previous-token)))
+               (local-set-key (kbd "C-c C-c") 'json-pretty-print-buffer)))
 #+END_SRC
 
 * Startup
