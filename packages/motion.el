@@ -45,26 +45,6 @@ Version: 2023-07-20"
     (previous-buffer)
     (while (and (not (r760-motion--user-buffer-p)) (not (string-equal (buffer-name) orig-buffer))) (previous-buffer))))
 
-(require 'vterm)
-
-(defvar r760-motion--vterm-return-buffer nil
-  "The name of the buffer to return to from vterm.
-
-Version: 2023-07-22")
-
-(defun r760-motion-toggle-vterm ()
-  "Switch back and forth between the current buffer and vterm.
-
-Version: 2023-07-22"
-  (interactive)
-  (let ((cb (buffer-name)) (vtb "*vterm*"))
-    (if (string-equal cb vtb)
-	(switch-to-buffer r760-motion--vterm-return-buffer)
-      (setq r760-motion--vterm-return-buffer cb)
-      (if (not (get-buffer vtb))
-	  (vterm)
-	(switch-to-buffer vtb)))))
-
 ;; motion in current buffer
 
 (defun r760-motion--mark-prefix ()
