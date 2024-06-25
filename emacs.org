@@ -401,7 +401,7 @@
   (evil-define-key 'normal 'global (kbd "<SPC>er")
     (lambda ()
       (interactive)
-      (org-babel-load-file "~/.emacs.d/emacs.org")))
+      (restart-emacs)))
 #+END_SRC
 
 *** org menu
