@@ -14,6 +14,7 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
 #+END_SRC
 
 * Requires
@@ -621,6 +622,16 @@
               (evil-local-set-key 'insert (kbd "<backtab>") 'yas-expand)
               (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
               (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
+              (setq lsp-enable-indentation nil)))
+#+END_SRC
+
+* Rust
+** enable lsp-mode, and disable lsp-indentation
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'rust-mode-hook
+            (lambda ()
+              (lsp)
+              (yas-minor-mode)
               (setq lsp-enable-indentation nil)))
 #+END_SRC
 
