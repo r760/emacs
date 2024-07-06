@@ -636,4 +636,5 @@
 #+BEGIN_SRC emacs-lisp
   (server-force-delete)
   (server-start)
+  (toggle-frame-maximized)
 #+END_SRC
