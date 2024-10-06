@@ -1,3 +1,5 @@
+(provide 'r760-motion)
+
 ;; motion across windows
 
 (defun r760-motion-split-window-vertically ()

@@ -2,7 +2,7 @@
 
 set -x
 
-find . -name "*.el" | xargs realpath | xargs -I{} ln -sf {} ~/.emacs.d/.
-ln -sf $(realpath emacs.org) ~/.emacs.d/.
-ln -sf $(realpath snippets) ~/.emacs.d/.
-ls -l ~/.emacs.d | grep "\->"
+mkdir -p ~/.emacs.d/packages
+find packages -name "*.el" | xargs realpath | xargs -I{} ln -sf {} ~/.emacs.d/packages/.
+ln -sf $(realpath .emacs) ~/.emacs
+ls -l ~/.emacs ~/.emacs.d/packages | grep "\->"

@@ -1,3 +1,5 @@
+(provide 'r760-timesheet)
+
 (defvar r760-timesheet-dir nil
   "The directory in which timesheet files are stored.
 

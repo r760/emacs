@@ -1,8 +1,0 @@
-# contributor: r760
-# name: while loop
-# key: while
-# --
-while ($1)
-{
-    $2
-}
