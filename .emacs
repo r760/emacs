@@ -261,9 +261,6 @@
   (setq c-default-style "k&r")
   (setq-default c-basic-offset 2))
 
-(use-package gruber-darker-theme
-  :ensure t
-
 (add-hook 'dired-mode-hook
 	  (lambda ()
 	    (evil-define-key 'normal dired-mode-map
