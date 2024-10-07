@@ -261,6 +261,16 @@
   (setq c-default-style "k&r")
   (setq-default c-basic-offset 2))
 
+(use-package clang-format
+  :ensure t
+  :config
+  (setq clang-format-style-option "gnu")
+  (setq clang-format-executable "/opt/local/bin/clang-format-mp-19"))
+
+(defun r760-gen-clang-format ()
+  (interactive)
+  (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config > .clang-format")))
+
 (add-hook 'dired-mode-hook
 	  (lambda ()
 	    (evil-define-key 'normal dired-mode-map
@@ -292,7 +302,8 @@
 	    (setq lsp-enable-indentation nil)
 	    (xref-etags-mode)
 	    (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
-	    (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)))
+	    (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
+	    (evil-local-set-key 'normal (kbd "=") 'clang-format)))
 
 (add-hook 'js-mode-hook
 	  (lambda ()
