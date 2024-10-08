@@ -304,7 +304,7 @@
 	    (xref-etags-mode)
 	    (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
 	    (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
-	    (evil-local-set-key 'normal (kbd "=") 'clang-format)))
+	    (evil-local-set-key 'normal (kbd "C-c C-c") 'clang-format)))
 
 (add-hook 'js-mode-hook
 	  (lambda ()
