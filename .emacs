@@ -243,6 +243,7 @@
   :config
   (evil-collection-init '(magit))
   (evil-collection-init '(dired))
+  (evil-collection-init '(proced))
   (evil-collection-init '(compile))
   (evil-collection-init '(help))
   (evil-collection-init '(grep))
