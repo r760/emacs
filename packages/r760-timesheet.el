@@ -14,11 +14,11 @@ Version: 2024-04-28"
 (defun r760-timesheet ()
   "Open today's timesheet and update clock report.
 
-Version: 2024-05-25"
+Version: 2024-12-14"
   (interactive)
   (let ((fpath nil))
     (if (not (file-directory-p r760-timesheet-dir))
-	(dired-create-directory timesheet-path)
+	(make-directory r760-timesheet-dir)
       nil)
     (setq fpath (r760-timesheet--path))
     (find-file fpath)
