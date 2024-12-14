@@ -36,7 +36,8 @@
   (which-key-add-key-based-replacements "<SPC>c" "exec menu")
   (which-key-add-key-based-replacements "<SPC>g" "git")
   (which-key-add-key-based-replacements "<SPC>i" "interactive")
-  (which-key-add-key-based-replacements "<SPC>s" "shell/terminal")
+  (which-key-add-key-based-replacements "<SPC>j" "open js buffer")
+  (which-key-add-key-based-replacements "<SPC>s" "open scratch buffer")
   (which-key-add-key-based-replacements "<SPC>x" "xref")
   (which-key-add-key-based-replacements "<SPC>e" "emacs config")
   (which-key-add-key-based-replacements "<SPC>ee" "edit")
@@ -235,6 +236,8 @@
   (evil-define-key 'normal 'global (kbd "<SPC>ig") 'rgrep)
   (evil-define-key 'normal 'global (kbd "<SPC>iG") 'grep)
   (evil-define-key 'normal 'global (kbd "<SPC>ip") 'proced)
+  (evil-define-key 'normal 'global (kbd "<SPC>s") (lambda () (interactive) (switch-to-buffer "*scratch*")))
+  (evil-define-key 'normal 'global (kbd "<SPC>j") (lambda () (interactive) (switch-to-buffer "*js*") (js-mode)))
   (evil-define-key 'normal 'global (kbd "<SPC>m") 'man)
   (evil-mode 1))
 
@@ -277,8 +280,8 @@
 	    (evil-define-key 'normal dired-mode-map
 	      (kbd "<SPC>") 'nil
 	      (kbd "M-s") 'nil
-	      (kbd "h") 'dired-up-directory
-	      (kbd "l") 'dired-find-file
+	      (kbd "C-h") 'dired-up-directory
+	      (kbd "C-l") 'dired-find-file
 	      (kbd "gg") 'r760-dired-first-file
 	      (kbd "G") 'r760-dired-last-file)
 	    (auto-revert-mode)))
@@ -326,6 +329,7 @@
 (global-display-line-numbers-mode)
 (global-hl-line-mode 1)
 (toggle-frame-maximized)
+(setq compilation-scroll-output t)
 
 (setq custom-file "~/.emacs.custom.el")
 (load-file custom-file)
