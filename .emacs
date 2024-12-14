@@ -104,7 +104,7 @@
      ["Interpret"
       ("i"
        "interpret"
-       executable-interpret (buffer-file-name)
+       executable-interpret
        :transient nil)]
      ["Evaluate LISP"
       ("b"
