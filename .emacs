@@ -200,6 +200,9 @@
   :config
   (global-set-key (kbd "C-s") 'swiper))
 
+(use-package avy
+  :ensure t)
+
 (use-package evil
   :ensure t
   :init
@@ -213,6 +216,7 @@
   (evil-define-key 'normal 'global (kbd "<SPC>1") 'delete-other-windows)
   (evil-define-key 'normal 'global (kbd "<SPC>2") 'r760-motion-split-window-vertically)
   (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-motion-split-window-horizontally)
+  (evil-define-key 'normal 'global (kbd "<SPC>a") 'evil-avy-goto-char)
   (evil-define-key 'normal 'global (kbd "<SPC>b") 'helm-buffers-list)
   (evil-define-key 'normal 'global (kbd "<SPC>k") 'kill-buffer)
   (evil-define-key 'normal 'global (kbd "<SPC>f") 'helm-find-files)
