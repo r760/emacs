@@ -6,6 +6,23 @@
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/packages"))
 
+(setq r760-cmd "")
+
+(defun r760-cmd-set ()
+  "Update r760-cmd"
+  (interactive)
+  (let ((cmd (read-string "Enter command: " r760-cmd)))
+    (if (y-or-n-p "Are you sure you want to update r760-cmd")
+        (progn
+          (message "Updated r760-cmd to %s" cmd)
+          (setq r760-cmd cmd))
+      nil)))
+
+(defun r760-cmd-exec ()
+  "Execute r760-cmd"
+  (interactive)
+  (async-shell-command r760-cmd))
+
 (use-package r760-motion
   :ensure nil
   :config
@@ -21,7 +38,9 @@
   (global-set-key (kbd "<f5>") 'revert-buffer))
 
 (use-package r760-dired
-  :ensure nil)
+  :ensure nil
+  :config
+  (setq dired-listing-switches "-lah"))
 
 (use-package r760-timesheet
   :ensure nil
@@ -42,6 +61,8 @@
   (which-key-add-key-based-replacements "<SPC>e" "emacs config")
   (which-key-add-key-based-replacements "<SPC>ee" "edit")
   (which-key-add-key-based-replacements "<SPC>er" "reload")
+  (which-key-add-key-based-replacements "<SPC>Q" "set quick cmd")
+  (which-key-add-key-based-replacements "<SPC>q" "execute quick cmd")
   (which-key-add-key-based-replacements "<SPC>o" "org menu"))
 
 (use-package magit
@@ -82,6 +103,10 @@
 	 (find-file "~/todo.org"))
        :transient nil)]])
 
+  (defun r760-make-buffer-file-executable ()
+    (interactive)
+    (shell-command-to-string (message "%s %s" "chmod +x" (buffer-file-name))))
+
   (transient-define-prefix r760-exec-menu ()
     "Compile/Interpret/Evaluate/Debug Menu"
     [
@@ -105,7 +130,7 @@
      ["Interpret"
       ("i"
        "interpret"
-       executable-interpret
+       r760-interpret-file
        :transient nil)]
      ["Evaluate LISP"
       ("b"
@@ -132,9 +157,9 @@
        :transient nil)
       ]])
 
-  (defun r760-make-buffer-file-executable ()
+  (defun r760-interpret-file ()
     (interactive)
-    (shell-command-to-string (message "%s %s" "chmod +x" (buffer-file-name))))
+    (async-shell-command (buffer-file-name)))
 
   (transient-define-prefix r760-current-buffer-menu ()
     "Currrent Buffer Menu"
@@ -211,6 +236,7 @@
   :config
   (evil-set-undo-system 'undo-tree)
   (evil-set-initial-state 'term-mode 'emacs)
+  (evil-define-key 'normal 'global (kbd "M-q") 'r760-motion-previous-mark)
   (evil-define-key 'normal 'global (kbd "<SPC><SPC>") 'other-window)
   (evil-define-key 'normal 'global (kbd "<SPC>0") 'delete-window)
   (evil-define-key 'normal 'global (kbd "<SPC>1") 'delete-other-windows)
@@ -243,6 +269,8 @@
   (evil-define-key 'normal 'global (kbd "<SPC>s") (lambda () (interactive) (switch-to-buffer "*scratch*")))
   (evil-define-key 'normal 'global (kbd "<SPC>j") (lambda () (interactive) (switch-to-buffer "*js*") (js-mode)))
   (evil-define-key 'normal 'global (kbd "<SPC>m") 'man)
+  (evil-define-key 'normal 'global (kbd "<SPC>Q") 'r760-cmd-set)
+  (evil-define-key 'normal 'global (kbd "<SPC>q") 'r760-cmd-exec)
   (evil-mode 1))
 
 (use-package evil-collection
@@ -266,18 +294,28 @@
 (use-package lsp-mode
   :ensure t
   :config
-  (setq c-default-style "k&r")
+  (setq c-default-style "gnu")
   (setq-default c-basic-offset 2))
 
 (use-package clang-format
   :ensure t
   :config
   (setq clang-format-style-option "gnu")
-  (setq clang-format-executable "/opt/local/bin/clang-format-mp-19"))
+  (setq clang-format-executable "/opt/homebrew/bin/clang-format"))
 
 (defun r760-gen-clang-format ()
   (interactive)
-  (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config > .clang-format")))
+  (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config | awk '{ if ($0 ~ /Language.*Cpp/) { print \"Language: C\" } else { print $0 } }' > .clang-format")))
+
+(use-package gruber-darker-theme
+  :ensure t)
+
+(use-package solarized-theme
+  :ensure t)
+
+(use-package material-theme
+  :ensure t)
+
 
 (add-hook 'dired-mode-hook
 	  (lambda ()
@@ -337,4 +375,5 @@
 
 (setq custom-file "~/.emacs.custom.el")
 (load-file custom-file)
+(setq indent-tabs-mode nil)
 (server-start)
