@@ -228,10 +228,6 @@
 (use-package avy
   :ensure t)
 
-(use-package evil-mc
-  :ensure t
-  :config (global-evil-mc-mode  1))
-
 (use-package evil
   :ensure t
   :init
@@ -290,6 +286,10 @@
   (evil-collection-init '(man))
   (evil-collection-init '(xref))
   (evil-collection-init '(org)))
+
+(use-package evil-mc
+  :ensure t
+  :config (global-evil-mc-mode  1))
 
 (use-package company
   :ensure t
