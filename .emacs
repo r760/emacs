@@ -6,10 +6,15 @@
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/packages"))
 
-(setq r760-cmd "")
+(defvar r760-cmd ""
+  "Command set by r760-cmd-set, and executed by r760-cmd-exec.
+
+Version: 2025-08-31")
 
 (defun r760-cmd-set ()
-  "Update r760-cmd"
+  "Update r760-cmd.
+
+Version: 2025-08-31"
   (interactive)
   (let ((cmd (read-string "Enter command: " r760-cmd)))
     (if (y-or-n-p "Are you sure you want to update r760-cmd")
@@ -19,7 +24,9 @@
       nil)))
 
 (defun r760-cmd-exec ()
-  "Execute r760-cmd"
+  "Execute r760-cmd.
+
+Version: 2025-08-31"
   (interactive)
   (async-shell-command r760-cmd))
 
