@@ -17,11 +17,9 @@ Version: 2025-08-31")
 Version: 2025-08-31"
   (interactive)
   (let ((cmd (read-string "Enter command: " r760-cmd)))
-    (if (y-or-n-p "Are you sure you want to update r760-cmd")
         (progn
-          (message "Updated r760-cmd to %s" cmd)
-          (setq r760-cmd cmd))
-      nil)))
+          (message "Updated r760-cmd")
+          (setq r760-cmd cmd))))
 
 (defun r760-cmd-exec ()
   "Execute r760-cmd.
