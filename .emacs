@@ -376,5 +376,6 @@
 (setq custom-file "~/.emacs.custom.el")
 (load-file custom-file)
 (setq indent-tabs-mode nil)
+(setenv "PATH" (concat "/opt/homebrew/bin/" ":" (getenv "PATH")))
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 (server-start)
