@@ -228,6 +228,10 @@
 (use-package avy
   :ensure t)
 
+(use-package evil-mc
+  :ensure t
+  :config (global-evil-mc-mode  1))
+
 (use-package evil
   :ensure t
   :init
