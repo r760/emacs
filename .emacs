@@ -246,7 +246,7 @@ Version: 2025-08-31"
                     (assq char (default-value 'evil-markers-alist)))))
 
   (evil-define-key 'normal 'global (kbd "q") 'evil-goto-mark-line)
-  (evil-define-key 'normal 'global (kbd "Q") 'evil-record-macro)
+  (evil-define-key 'normal 'global (kbd "M-q") 'evil-record-macro)
 
   (evil-define-key 'normal 'global (kbd "s-<return>") 'save-buffer)
 
