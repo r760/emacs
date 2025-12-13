@@ -6,21 +6,6 @@
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/packages"))
 
-(defvar r760-cmd ""
-  "Command set by r760-cmd-set, and executed by r760-cmd-exec.
-
-Version: 2025-08-31")
-
-(defun r760-cmd-set ()
-  "Update r760-cmd.
-
-Version: 2025-08-31"
-  (interactive)
-  (let ((cmd (read-string "Enter command: " r760-cmd)))
-        (progn
-          (message "Updated r760-cmd")
-          (setq r760-cmd cmd))))
-
 (defun r760-zoom-in ()
     (interactive)
     (text-scale-adjust 1))
@@ -28,13 +13,6 @@ Version: 2025-08-31"
 (defun r760-zoom-out ()
     (interactive)
     (text-scale-adjust -1))
-
-(defun r760-cmd-exec ()
-  "Execute r760-cmd.
-
-Version: 2025-08-31"
-  (interactive)
-  (async-shell-command r760-cmd))
 
 (use-package r760-motion
   :ensure nil
