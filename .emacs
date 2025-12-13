@@ -21,6 +21,14 @@ Version: 2025-08-31"
           (message "Updated r760-cmd")
           (setq r760-cmd cmd))))
 
+(defun r760-zoom-in ()
+    (interactive)
+    (text-scale-adjust 1))
+
+(defun r760-zoom-out ()
+    (interactive)
+    (text-scale-adjust -1))
+
 (defun r760-cmd-exec ()
   "Execute r760-cmd.
 
@@ -31,16 +39,7 @@ Version: 2025-08-31"
 (use-package r760-motion
   :ensure nil
   :config
-  (global-set-key (kbd "C-x 2") 'r760-motion-split-window-vertically)
-  (global-set-key (kbd "C-x 3") 'r760-motion-split-window-horizontally)
-  (global-set-key (kbd "M-e") 'r760-motion-set-mark)
-  (global-set-key (kbd "M-r") 'r760-motion-delete-mark)
-  (global-set-key (kbd "M-w") 'r760-motion-next-mark)
-  (global-set-key (kbd "M-q") 'r760-motion-previous-mark)
-  (global-set-key (kbd "M-s") 'r760-motion-next-user-buffer)
-  (global-set-key (kbd "M-a") 'r760-motion-previous-user-buffer)
-  (global-set-key (kbd "C-x e") 'eval-buffer)
-  (global-set-key (kbd "<f5>") 'revert-buffer))
+  (global-set-key (kbd "C-x e") 'eval-buffer))
 
 (use-package r760-dired
   :ensure nil
@@ -56,19 +55,13 @@ Version: 2025-08-31"
   :ensure t
   :config
   (which-key-mode 1)
-  (which-key-add-key-based-replacements "<SPC>;" "current buffer menu")
-  (which-key-add-key-based-replacements "<SPC>c" "exec menu")
+  (which-key-add-key-based-replacements "<SPC>q" "exec menu")
   (which-key-add-key-based-replacements "<SPC>g" "git")
-  (which-key-add-key-based-replacements "<SPC>i" "interactive")
-  (which-key-add-key-based-replacements "<SPC>j" "open js buffer")
-  (which-key-add-key-based-replacements "<SPC>s" "open scratch buffer")
-  (which-key-add-key-based-replacements "<SPC>x" "xref")
-  (which-key-add-key-based-replacements "<SPC>e" "emacs config")
-  (which-key-add-key-based-replacements "<SPC>ee" "edit")
-  (which-key-add-key-based-replacements "<SPC>er" "reload")
-  (which-key-add-key-based-replacements "<SPC>Q" "set quick cmd")
-  (which-key-add-key-based-replacements "<SPC>q" "execute quick cmd")
-  (which-key-add-key-based-replacements "<SPC>o" "org menu"))
+  (which-key-add-key-based-replacements "<SPC>z" "edit config")
+  (which-key-add-key-based-replacements "<SPC>u" "open js buffer")
+  (which-key-add-key-based-replacements "<SPC>i" "open scratch buffer")
+  (which-key-add-key-based-replacements "<SPC>o" "timesheet")
+  (which-key-add-key-based-replacements "<SPC>;" "current buffer menu"))
 
 (use-package magit
   :ensure t)
@@ -203,6 +196,8 @@ Version: 2025-08-31"
 (use-package undo-tree
   :ensure t
   :config
+  (add-hook 'text-mode-hook 'undo-tree-mode)
+  (add-hook 'makefile-mode-hook 'undo-tree-mode)
   (add-hook 'prog-mode-hook 'undo-tree-mode)
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 
@@ -238,44 +233,99 @@ Version: 2025-08-31"
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (setq evil-want-minibuffer t)
   :config
   (evil-set-undo-system 'undo-tree)
   (evil-set-initial-state 'term-mode 'emacs)
-  (evil-define-key 'normal 'global (kbd "M-q") 'r760-motion-previous-mark)
+
+  ;; lowercase global marks
+  (advice-add 'evil-global-marker-p :override
+              (lambda (char)
+                "Whether CHAR denotes a global marker."
+                (or (and (>= char ?a) (<= char ?z))
+                    (assq char (default-value 'evil-markers-alist)))))
+
+  (evil-define-key 'normal 'global (kbd "q") 'evil-goto-mark-line)
+  (evil-define-key 'normal 'global (kbd "Q") 'evil-record-macro)
+
+  (evil-define-key 'normal 'global (kbd "s-<return>") 'save-buffer)
+
+  ;; isearch-mode-map
+  (evil-define-key 'insert 'global (kbd "s-<return>")
+    (lambda ()
+      "Cycle =, +, - , _.
+
+Version: 2025-10-09"
+      (interactive)
+      (let ((x (preceding-char)))
+        (cond
+         ((char-equal x ? ) (insert "="))
+         ((char-equal x ?=) (left-char) (delete-char 1) (insert "+"))
+         ((char-equal x ?+) (left-char) (delete-char 1) (insert "-"))
+         ((char-equal x ?_) (left-char) (delete-char 1) (insert "-"))
+         ((char-equal x ?-) (left-char) (delete-char 1) (insert "_"))
+         (t (if (minibuffer-window-active-p (selected-window)) (insert "-") (insert "_")))))))
+
+  ;; visual maps
+  (evil-define-key 'visual 'global (kbd "q") 'eval-region)
+  (evil-define-key 'visual 'global (kbd "v") 'evil-visual-line)
+
+  ;; function maps
+  (evil-define-key 'normal 'global (kbd "<f5>") 'revert-buffer)
+
+  (evil-define-key 'normal 'global (kbd "s-s") 'save-buffer)
+  (evil-define-key 'normal 'global (kbd "s-f") 'evil-search-forward)
+
+  (evil-define-key 'normal 'global (kbd "s-i") 'r760-motion-previous-user-buffer)
+  (evil-define-key 'normal 'global (kbd "s-o") 'r760-motion-next-user-buffer)
+
+  (evil-define-key 'normal 'global (kbd "s-j") 'evil-forward-paragraph)
+  (evil-define-key 'normal 'global (kbd "s-k") 'evil-backward-paragraph)
+
+  (evil-define-key 'normal 'global (kbd "s-h") 'r760-zoom-out)
+  (evil-define-key 'normal 'global (kbd "s-l") 'r760-zoom-in)
+
+  (evil-define-key 'normal 'global (kbd "s-<wheel-down>") 'r760-zoom-out)
+  (evil-define-key 'normal 'global (kbd "s-<wheel-up>") 'r760-zoom-in)
+
+  ;; space maps
   (evil-define-key 'normal 'global (kbd "<SPC><SPC>") 'other-window)
   (evil-define-key 'normal 'global (kbd "<SPC>0") 'delete-window)
   (evil-define-key 'normal 'global (kbd "<SPC>1") 'delete-other-windows)
   (evil-define-key 'normal 'global (kbd "<SPC>2") 'r760-motion-split-window-vertically)
   (evil-define-key 'normal 'global (kbd "<SPC>3") 'r760-motion-split-window-horizontally)
+
+  (evil-define-key 'normal 'global (kbd "<SPC>qe") (lambda () (interactive) (find-file "~/.emacs")))
+  (evil-define-key 'normal 'global (kbd "<SPC>qr") 'restart-emacs)
+
+  (evil-define-key 'normal 'global (kbd "<SPC>w") 'imenu)
+  (evil-define-key 'normal 'global (kbd "<SPC>e") 'dired-jump)
+  (evil-define-key 'normal 'global (kbd "<SPC>r") 'helm-find)
+  (evil-define-key 'normal 'global (kbd "<SPC>t") 'rgrep)
+
   (evil-define-key 'normal 'global (kbd "<SPC>a") 'evil-avy-goto-char)
-  (evil-define-key 'normal 'global (kbd "<SPC>b") 'helm-buffers-list)
-  (evil-define-key 'normal 'global (kbd "<SPC>k") 'kill-buffer)
-  (evil-define-key 'normal 'global (kbd "<SPC>f") 'helm-find-files)
-  (evil-define-key 'normal 'global (kbd "<SPC>F") 'helm-find)
+  (evil-define-key 'normal 'global (kbd "<SPC>s") 'xref-find-definitions)
   (evil-define-key 'normal 'global (kbd "<SPC>d") 'dired)
-  (evil-define-key 'normal 'global (kbd "<SPC>D") 'dired-jump)
-  (evil-define-key 'normal 'global (kbd "<SPC>B") 'helm-bookmarks)
-  (evil-define-key 'normal 'global (kbd "<SPC>p") 'helm-show-kill-ring)
+  (evil-define-key 'normal 'global (kbd "<SPC>f") 'helm-find-files)
   (evil-define-key 'normal 'global (kbd "<SPC>g") (lambda () (interactive) (magit-status) (delete-other-windows)))
-  (evil-define-key 'normal 'global (kbd "<SPC>o") 'r760-org-menu)
+
   (evil-define-key 'normal 'global (kbd "<SPC>c") 'r760-exec-menu)
-  (evil-define-key 'normal 'global (kbd "<SPC>ee") (lambda () (interactive) (find-file "~/.emacs")))
-  (evil-define-key 'normal 'global (kbd "<SPC>er") (lambda () (interactive) (restart-emacs)))
+  (evil-define-key 'normal 'global (kbd "<SPC>x") 'helm-M-x)
+
+  (evil-define-key 'normal 'global (kbd "<SPC>y") (lambda () (interactive) (switch-to-buffer "*js*") (js-mode)))
+  (evil-define-key 'normal 'global (kbd "<SPC>u") 'helm-bookmarks)
+  (evil-define-key 'normal 'global (kbd "<SPC>i") 'recentf-open-files)
+  (evil-define-key 'normal 'global (kbd "<SPC>o") 'r760-org-menu)
+  (evil-define-key 'normal 'global (kbd "<SPC>p") 'helm-show-kill-ring)
+
+  (evil-define-key 'normal 'global (kbd "<SPC>h") (lambda () (interactive) (switch-to-buffer "*scratch*")))
+  (evil-define-key 'normal 'global (kbd "<SPC>j") 'helm-buffers-list)
+  (evil-define-key 'normal 'global (kbd "<SPC>k") 'kill-buffer)
   (evil-define-key 'normal 'global (kbd "<SPC>;") 'r760-current-buffer-menu)
-  (evil-define-key 'normal 'global (kbd "<SPC>r") 'recentf-open-files)
-  (evil-define-key 'normal 'global (kbd "<SPC>xd") 'xref-find-definitions)
-  (evil-define-key 'normal 'global (kbd "<SPC>xD") 'xref-find-definitions-other-window)
-  (evil-define-key 'normal 'global (kbd "<SPC>u") 'winner-undo)
-  (evil-define-key 'normal 'global (kbd "<SPC>ib") 'ibuffer)
-  (evil-define-key 'normal 'global (kbd "<SPC>if") 'imenu)
-  (evil-define-key 'normal 'global (kbd "<SPC>ig") 'rgrep)
-  (evil-define-key 'normal 'global (kbd "<SPC>iG") 'grep)
-  (evil-define-key 'normal 'global (kbd "<SPC>ip") 'proced)
-  (evil-define-key 'normal 'global (kbd "<SPC>s") (lambda () (interactive) (switch-to-buffer "*scratch*")))
-  (evil-define-key 'normal 'global (kbd "<SPC>j") (lambda () (interactive) (switch-to-buffer "*js*") (js-mode)))
+
+  (evil-define-key 'normal 'global (kbd "<SPC>n") 'switch-to-buffer)
   (evil-define-key 'normal 'global (kbd "<SPC>m") 'man)
-  (evil-define-key 'normal 'global (kbd "<SPC>Q") 'r760-cmd-set)
-  (evil-define-key 'normal 'global (kbd "<SPC>q") 'r760-cmd-exec)
+
   (evil-mode 1))
 
 (use-package evil-collection
@@ -294,7 +344,8 @@ Version: 2025-08-31"
 
 (use-package evil-mc
   :ensure t
-  :config (global-evil-mc-mode  1))
+  :config (global-evil-mc-mode 1))
+
 
 (use-package company
   :ensure t
@@ -314,7 +365,8 @@ Version: 2025-08-31"
 
 (defun r760-gen-clang-format ()
   (interactive)
-  (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config | awk '{ if ($0 ~ /Language.*Cpp/) { print \"Language: C\" } else { print $0 } }' > .clang-format")))
+  (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config | sed 's|Language.*Cpp|Language: C|g;s|ColumnLimit.*|ColumnLimit: 0|g' > .clang-format")))
+
 
 (use-package gruber-darker-theme
   :ensure t)
@@ -325,16 +377,20 @@ Version: 2025-08-31"
 (use-package material-theme
   :ensure t)
 
+(use-package doom-themes
+  :ensure t)
+
 
 (add-hook 'dired-mode-hook
 	  (lambda ()
 	    (evil-define-key 'normal dired-mode-map
 	      (kbd "<SPC>") 'nil
-	      (kbd "M-s") 'nil
-	      (kbd "C-h") 'dired-up-directory
-	      (kbd "C-l") 'dired-find-file
+	      (kbd "h") 'dired-up-directory
+	      (kbd "l") 'dired-find-file
 	      (kbd "gg") 'r760-dired-first-file
-	      (kbd "G") 'r760-dired-last-file)
+	      (kbd "G") 'r760-dired-last-file
+	      (kbd "C-c C-j") 'rwi-zon-or-dezon)
+            (evil-mc-mode 0)
 	    (auto-revert-mode)))
 
 (eval-after-load 'org-agenda
@@ -351,6 +407,9 @@ Version: 2025-08-31"
 (add-hook 'help-mode-hook (lambda () (evil-define-key 'normal help-mode-map (kbd "<SPC>") 'nil)))
 (add-hook 'Man-mode-hook (lambda () (evil-define-key 'normal Man-mode-map (kbd "<SPC>") 'nil)))
 
+;; no tabs
+(setq-default indent-tabs-mode nil)
+
 (add-hook 'c-mode-hook
 	  (lambda ()
 	    (lsp)
@@ -358,9 +417,15 @@ Version: 2025-08-31"
 	    (xref-etags-mode)
 	    (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
 	    (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
-	    (evil-local-set-key 'normal (kbd "C-c C-c") 'clang-format)))
+	    (evil-local-set-key 'normal (kbd "C-c C-c") 'clang-format)
+	    (evil-local-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
+	    (hs-minor-mode)))
 
 (add-hook 'js-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c C-c") 'json-pretty-print-buffer)))
+
+(add-hook 'js-json-mode-hook
 	  (lambda ()
 	    (local-set-key (kbd "C-c C-c") 'json-pretty-print-buffer)))
 
@@ -373,7 +438,7 @@ Version: 2025-08-31"
 (setq split-width-threshold 1)
 (setq backup-directory-alist '(("." . "~/.emacs.d/saves")))
 
-(menu-bar-mode 0)
+;;(menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (setq inhibit-splash-screen t)
@@ -382,9 +447,15 @@ Version: 2025-08-31"
 (toggle-frame-maximized)
 (setq compilation-scroll-output t)
 
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (setq custom-file "~/.emacs.custom.el")
 (load-file custom-file)
+
 (setq indent-tabs-mode nil)
 (setenv "PATH" (concat "/opt/homebrew/bin/" ":" (getenv "PATH")))
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 (server-start)
+(setq shell-file-name "/bin/zsh")
+(setq indent-tabs-mode nil)
+(setq Man-sed-command "gsed")
+(set-face-attribute 'mode-line nil :height 200)
