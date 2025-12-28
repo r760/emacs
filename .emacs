@@ -1,4 +1,4 @@
-;; -*- mode: elisp -*-
+;; -*- mode: elisp; lexical-binding: t; -*-
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -389,15 +389,16 @@ Version: 2025-10-09"
 (setq-default indent-tabs-mode nil)
 
 (add-hook 'c-mode-hook
-	  (lambda ()
-	    (lsp)
-	    (setq lsp-enable-indentation nil)
-	    (xref-etags-mode)
-	    (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
-	    (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
-	    (evil-local-set-key 'normal (kbd "C-c C-c") 'clang-format)
-	    (evil-local-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
-	    (hs-minor-mode)))
+          (lambda ()
+            (lsp)
+            (setq lsp-headerline-breadcrumb-enable nil)
+            (setq lsp-enable-indentation nil)
+            (xref-etags-mode)
+            (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
+            (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
+            (evil-local-set-key 'normal (kbd "C-c C-c") 'clang-format)
+            (evil-local-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
+            (hs-minor-mode)))
 
 (add-hook 'js-mode-hook
 	  (lambda ()
@@ -429,11 +430,15 @@ Version: 2025-10-09"
 (setq custom-file "~/.emacs.custom.el")
 (load-file custom-file)
 
+(load-theme 'solarized t)
+
 (setq indent-tabs-mode nil)
 (setenv "PATH" (concat "/opt/homebrew/bin/" ":" (getenv "PATH")))
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
-(server-start)
 (setq shell-file-name "/bin/zsh")
 (setq indent-tabs-mode nil)
 (setq Man-sed-command "gsed")
 (set-face-attribute 'mode-line nil :height 200)
+
+(unless (server-running-p)
+  (server-start))
