@@ -427,3 +427,15 @@ Version: 2025-10-09"
 
 (unless (server-running-p)
   (server-start))
+
+;; modeline
+(setq-default mode-line-format '(" "
+                                 (:eval (propertize "%b" 'face '(:weight bold :slant italic :background "#0000AC")))
+                                 " | "
+                                 "L%l "
+                                 "C%c %p | "
+                                 (:eval (format "<%s>" (capitalize (substring (format "%s" evil-state) 0 1))))
+                                 " |"
+                                 (vc-mode vc-mode)
+                                 " (" mode-name ")"
+                                 mode-line-end-spaces))
