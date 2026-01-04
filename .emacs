@@ -324,7 +324,6 @@ Version: 2025-10-09"
   :ensure t
   :config (global-evil-mc-mode 1))
 
-
 (use-package company
   :ensure t
   :init (add-hook 'after-init-hook 'global-company-mode))
@@ -344,20 +343,6 @@ Version: 2025-10-09"
 (defun r760-gen-clang-format ()
   (interactive)
   (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config | sed 's|Language.*Cpp|Language: C|g;s|ColumnLimit.*|ColumnLimit: 0|g' > .clang-format")))
-
-
-(use-package gruber-darker-theme
-  :ensure t)
-
-(use-package solarized-theme
-  :ensure t)
-
-(use-package material-theme
-  :ensure t)
-
-(use-package doom-themes
-  :ensure t)
-
 
 (add-hook 'dired-mode-hook
 	  (lambda ()
