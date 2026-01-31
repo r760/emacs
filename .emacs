@@ -401,6 +401,10 @@ Version: 2025-10-09"
 	  (lambda ()
 	    (local-set-key (kbd "C-c C-c") 'json-pretty-print-buffer)))
 
+(add-hook 'dashboard-mode-hook
+	  (lambda ()
+            (evil-local-set-key 'normal (kbd "q") 'quit-window)))
+
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
