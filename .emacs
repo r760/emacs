@@ -340,6 +340,14 @@ Version: 2025-10-09"
   (setq clang-format-style-option "gnu")
   (setq clang-format-executable "/opt/homebrew/bin/clang-format"))
 
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-items '((bookmarks . 10)))
+  (setq dashboard-show-shortcuts nil)
+  (setq dashboard-footer-messages'(""))
+  (dashboard-setup-startup-hook))
+
 (defun r760-gen-clang-format ()
   (interactive)
   (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config | sed 's|Language.*Cpp|Language: C|g;s|ColumnLimit.*|ColumnLimit: 0|g' > .clang-format")))
@@ -439,3 +447,5 @@ Version: 2025-10-09"
                                  (vc-mode vc-mode)
                                  " (" mode-name ")"
                                  mode-line-end-spaces))
+
+(dashboard-open)
