@@ -411,11 +411,13 @@ Version: 2025-10-09"
 (toggle-frame-maximized)
 (setq compilation-scroll-output t)
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(use-package ember-theme
+  :vc (:url "https://github.com/ember-theme/emacs")
+  :config
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/ember-theme/"))
+
 (setq custom-file "~/.emacs.custom.el")
 (load-file custom-file)
-
-(load-theme 'solarized t)
 
 (setq indent-tabs-mode nil)
 (setenv "PATH" (concat "/opt/homebrew/bin/" ":" (getenv "PATH")))
@@ -425,12 +427,9 @@ Version: 2025-10-09"
 (setq Man-sed-command "gsed")
 (set-face-attribute 'mode-line nil :height 200)
 
-(unless (server-running-p)
-  (server-start))
-
 ;; modeline
 (setq-default mode-line-format '(" "
-                                 (:eval (propertize "%b" 'face '(:weight bold :slant italic :background "#0000AC")))
+                                 (:eval (propertize "%b" 'face '(:weight bold :slant italic)))
                                  " | "
                                  "L%l "
                                  "C%c %p | "
@@ -439,3 +438,6 @@ Version: 2025-10-09"
                                  (vc-mode vc-mode)
                                  " (" mode-name ")"
                                  mode-line-end-spaces))
+
+(unless (server-running-p)
+  (server-start))
