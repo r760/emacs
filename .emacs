@@ -44,9 +44,6 @@
 (use-package magit
   :ensure t)
 
-(use-package ghostel
-  :ensure t)
-
 (use-package transient
   :ensure t
   :config
@@ -92,11 +89,11 @@
      ["Compile"
       ("c"
        "compile"
-       ghostel-compile
+       compile
        :transient nil)
       ("r"
        "recompile"
-       ghostel-recompile
+       recompile
        :transient nil)
       ("n"
        "next error"
