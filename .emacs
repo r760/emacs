@@ -335,7 +335,16 @@ Version: 2025-10-09"
   :ensure t
   :config
   (setq c-default-style "gnu")
-  (setq-default c-basic-offset 2))
+  (setq-default c-basic-offset 2)
+  (setq lsp-clients-clangd-args '("--header-insertion=never")))
+
+(use-package yasnippet
+  :ensure t
+  :config
+  ;;(setq-default yas-installed-snippets-dir '("~/.emacs.d/snippets"))
+  ;;(setq-default yas-snippet-dirs '("~/.emacs.d/snippets"))
+  ;;(add-to-list 'load-path "~/.emacs.d/snippets")
+  (yas-reload-all))
 
 (use-package clang-format
   :ensure t
@@ -381,12 +390,13 @@ Version: 2025-10-09"
             (lsp)
             (setq lsp-headerline-breadcrumb-enable nil)
             (setq lsp-enable-indentation nil)
+            (setq lsp-enable-on-type-formatting nil)
             (xref-etags-mode)
             (evil-local-set-key 'normal (kbd "(") 'c-beginning-of-defun)
             (evil-local-set-key 'normal (kbd ")") 'c-end-of-defun)
             (evil-local-set-key 'normal (kbd "C-c C-c") 'clang-format)
-            (evil-local-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
-            (hs-minor-mode)))
+            (yas-minor-mode)
+            (evil-local-set-key 'insert (kbd "s-c") 'yas-expand)))
 
 (add-hook 'js-mode-hook
 	  (lambda ()
@@ -423,6 +433,8 @@ Version: 2025-10-09"
 (load-file custom-file)
 
 (setq indent-tabs-mode nil)
+(setenv "PATH" (concat "/usr/bin/" ":" (getenv "PATH")))
+(setenv "PATH" (concat "/usr/local/bin/" ":" (getenv "PATH")))
 (setenv "PATH" (concat "/opt/homebrew/bin/" ":" (getenv "PATH")))
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 (setq shell-file-name "/bin/zsh")
@@ -442,5 +454,7 @@ Version: 2025-10-09"
                                  " (" mode-name ")"
                                  mode-line-end-spaces))
 
-(unless (server-running-p)
-  (server-start))
+(setq server-socket-dir "~/.emacs.d/server/")
+
+(server-force-delete)
+(server-start)
