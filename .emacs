@@ -20,9 +20,7 @@
   (global-set-key (kbd "C-x e") 'eval-buffer))
 
 (use-package r760-dired
-  :ensure nil
-  :config
-  (setq dired-listing-switches "-lah"))
+  :ensure nil)
 
 (use-package r760-timesheet
   :ensure nil
@@ -352,6 +350,9 @@ Version: 2025-10-09"
 (defun r760-gen-clang-format ()
   (interactive)
   (shell-command-to-string (concat clang-format-executable " " "-style=gnu -dump-config | sed 's|Language.*Cpp|Language: C|g;s|ColumnLimit.*|ColumnLimit: 0|g' > .clang-format")))
+
+(setq dired-listing-switches "-lah")
+(setq dired-dwim-target t)
 
 (add-hook 'dired-mode-hook
 	  (lambda ()
