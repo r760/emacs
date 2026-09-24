@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (provide 'r760-motion)
 
 ;; motion across windows

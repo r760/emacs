@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (provide 'r760-dired)
 
 (defun r760-dired-first-file ()

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (provide 'r760-timesheet)
 
 (defvar r760-timesheet-dir nil
