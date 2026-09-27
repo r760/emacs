@@ -1,5 +1,21 @@
 ;; -*- mode: elisp; lexical-binding: t; -*-
 
+;; Mac OS
+(when (eq system-type 'darwin)
+  (setenv "MACOSX_DEPLOYMENT_TARGET" "15.0")
+
+  (add-to-list 'exec-path "/opt/homebrew/bin")
+  (setenv "PATH" (concat "/opt/homebrew/bin:" (getenv "PATH")))
+
+  (setenv "LIBRARY_PATH"
+          (concat "/opt/homebrew/opt/gcc/lib/gcc/current"
+                  ":"
+                  "/opt/homebrew/opt/libgccjit/lib/gcc/current"
+                  ":"
+                  (getenv "LIBRARY_PATH")))
+
+  (setq Man-sed-command "gsed"))
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
@@ -209,7 +225,7 @@
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
-  (setq evil-want-minibuffer t)
+  (setq evil-want-minibuffer nil)
   :config
   (evil-set-undo-system 'undo-tree)
   (evil-set-initial-state 'term-mode 'emacs)
@@ -433,11 +449,9 @@ Version: 2025-10-09"
 (setq indent-tabs-mode nil)
 (setenv "PATH" (concat "/usr/bin/" ":" (getenv "PATH")))
 (setenv "PATH" (concat "/usr/local/bin/" ":" (getenv "PATH")))
-(setenv "PATH" (concat "/opt/homebrew/bin/" ":" (getenv "PATH")))
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 (setq shell-file-name "/bin/zsh")
 (setq indent-tabs-mode nil)
-(setq Man-sed-command "gsed")
 (set-face-attribute 'mode-line nil :height 200)
 
 ;; modeline
